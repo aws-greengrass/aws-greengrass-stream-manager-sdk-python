@@ -1,0 +1,16 @@
+example package
+===============
+
+.. automodule:: example
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+
+   example.benchmarker
+   example.example
+

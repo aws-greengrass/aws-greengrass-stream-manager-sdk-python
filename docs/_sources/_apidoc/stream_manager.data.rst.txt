@@ -1,0 +1,8 @@
+stream\_manager.data package
+============================
+
+.. automodule:: stream_manager.data
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

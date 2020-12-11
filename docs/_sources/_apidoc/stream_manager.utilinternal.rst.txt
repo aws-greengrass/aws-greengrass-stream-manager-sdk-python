@@ -1,0 +1,7 @@
+stream\_manager.utilinternal module
+===================================
+
+.. automodule:: stream_manager.utilinternal
+    :members:
+    :undoc-members:
+    :show-inheritance:

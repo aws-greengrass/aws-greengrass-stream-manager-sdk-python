@@ -1,0 +1,7 @@
+example.benchmarker module
+==========================
+
+.. automodule:: example.benchmarker
+    :members:
+    :undoc-members:
+    :show-inheritance:

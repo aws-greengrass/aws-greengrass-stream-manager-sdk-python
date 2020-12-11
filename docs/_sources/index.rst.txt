@@ -1,0 +1,7 @@
+.. include::
+    ../resources/README.rst
+
+API Documentation
+=================
+* :doc:`stream_manager <_apidoc/stream_manager>`
+* :ref:`genindex`

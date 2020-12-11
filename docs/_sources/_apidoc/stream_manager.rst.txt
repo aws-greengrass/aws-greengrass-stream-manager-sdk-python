@@ -1,0 +1,25 @@
+stream\_manager package
+=======================
+
+.. automodule:: stream_manager
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+
+    stream_manager.data
+
+Submodules
+----------
+
+.. toctree::
+
+   stream_manager.exceptions
+   stream_manager.streammanagerclient
+   stream_manager.util
+   stream_manager.utilinternal
+

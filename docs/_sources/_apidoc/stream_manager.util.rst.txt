@@ -1,0 +1,7 @@
+stream\_manager.util module
+===========================
+
+.. automodule:: stream_manager.util
+    :members:
+    :undoc-members:
+    :show-inheritance:

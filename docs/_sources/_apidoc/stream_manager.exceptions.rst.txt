@@ -1,0 +1,7 @@
+stream\_manager.exceptions module
+=================================
+
+.. automodule:: stream_manager.exceptions
+    :members:
+    :undoc-members:
+    :show-inheritance:
