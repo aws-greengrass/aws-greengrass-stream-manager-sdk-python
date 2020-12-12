@@ -27,7 +27,7 @@ setup(
     name='stream_manager',
     version=get_version(),
     description='The AWS IoT Greengrass Stream Manager SDK for Python',
-    long_description=open('README.rst').read(),
+    long_description=open('README.md').read(),
     author='Amazon Web Services',
     url='',
     scripts=[],
