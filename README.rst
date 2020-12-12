@@ -8,7 +8,8 @@ Manager](https://docs.aws.amazon.com/greengrass/latest/developerguide/stream-man
 Overview
 =====================
 
-This document provides instructions for preparing your Java code to manage Streams in Stream Manager using the Java SDK.
+This document provides instructions for preparing your Python code to manage Streams in Stream Manager using the Python
+SDK.
 
 =====================
 Using Stream Manager Client to work with Streams

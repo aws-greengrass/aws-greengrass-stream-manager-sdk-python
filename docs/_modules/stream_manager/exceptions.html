@@ -143,7 +143,13 @@
            <div itemprop="articleBody">
             
   <h1>Source code for stream_manager.exceptions</h1><div class="highlight"><pre>
-<div class="viewcode-block" id="StreamManagerException"><a class="viewcode-back" href="../../_apidoc/stream_manager.exceptions.html#stream_manager.exceptions.StreamManagerException">[docs]</a><span></span><span class="k">class</span> <span class="nc">StreamManagerException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.</span>
+<span class="sd">SPDX-License-Identifier: Apache-2.0</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="StreamManagerException"><a class="viewcode-back" href="../../_apidoc/stream_manager.exceptions.html#stream_manager.exceptions.StreamManagerException">[docs]</a><span class="k">class</span> <span class="nc">StreamManagerException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">request_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">status</span>
