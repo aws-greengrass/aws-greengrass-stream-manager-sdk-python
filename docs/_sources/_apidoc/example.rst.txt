@@ -2,9 +2,9 @@ example package
 ===============
 
 .. automodule:: example
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------
@@ -13,4 +13,3 @@ Submodules
 
    example.benchmarker
    example.example
-

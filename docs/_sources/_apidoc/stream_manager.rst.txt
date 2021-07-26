@@ -2,16 +2,16 @@ stream\_manager package
 =======================
 
 .. automodule:: stream_manager
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 Subpackages
 -----------
 
 .. toctree::
 
-    stream_manager.data
+   stream_manager.data
 
 Submodules
 ----------
@@ -22,4 +22,3 @@ Submodules
    stream_manager.streammanagerclient
    stream_manager.util
    stream_manager.utilinternal
-

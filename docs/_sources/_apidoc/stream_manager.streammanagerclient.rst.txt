@@ -2,6 +2,6 @@ stream\_manager.streammanagerclient module
 ==========================================
 
 .. automodule:: stream_manager.streammanagerclient
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:

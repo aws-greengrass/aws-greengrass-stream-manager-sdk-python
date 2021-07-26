@@ -1,8 +1,3 @@
-"""
-Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-SPDX-License-Identifier: Apache-2.0
-"""
-
 from reprlib import repr as limitedRepr
 
 
@@ -705,26 +700,26 @@ class EventType(enum.Enum):
         )
 
 
-class StatusLevel(enum.Enum):
+class Status(enum.Enum):
     """
-    Defines the verbosity of status messages in a status-stream.
+    The status of the event.
     """
 
-    ERROR = 0
-    WARN = 1
-    INFO = 2
-    DEBUG = 3
-    TRACE = 4
+    Success = 0
+    Failure = 1
+    InProgress = 2
+    Warning = 3
+    Canceled = 4
 
     @staticmethod
     def from_dict(d):
-        return StatusLevel(d)
+        return Status(d)
 
     def as_dict(self):
         return self.value
 
     def __repr__(self):
-        return "<Enum StatusLevel. {}: {}>".format(
+        return "<Enum Status. {}: {}>".format(
             limitedRepr(self.name), limitedRepr(self.value)
         )
 
@@ -1103,26 +1098,26 @@ class StatusContext:
         )
 
 
-class Status(enum.Enum):
+class StatusLevel(enum.Enum):
     """
-    The status of the event.
+    Defines the verbosity of status messages in a status-stream.
     """
 
-    Success = 0
-    Failure = 1
-    InProgress = 2
-    Warning = 3
-    Canceled = 4
+    ERROR = 0
+    WARN = 1
+    INFO = 2
+    DEBUG = 3
+    TRACE = 4
 
     @staticmethod
     def from_dict(d):
-        return Status(d)
+        return StatusLevel(d)
 
     def as_dict(self):
         return self.value
 
     def __repr__(self):
-        return "<Enum Status. {}: {}>".format(
+        return "<Enum StatusLevel. {}: {}>".format(
             limitedRepr(self.name), limitedRepr(self.value)
         )
 
@@ -1560,6 +1555,52 @@ class UnknownOperationError:
                 if isinstance(self.__error_message, bytes)
                 else self.__error_message
             ),
+        )
+
+
+class StrategyOnFull(enum.Enum):
+    """
+    StrategyOnFull is used in the MessageStreamDefinition when creating a stream.
+    It defines the behavior when the stream has reached the maximum size.
+    RejectNewData: any append message request after the stream is full will be rejected with an exception.
+    OverwriteOldestData: the oldest stream segments will be deleted until there is room for the new message.
+    """
+
+    RejectNewData = 0
+    OverwriteOldestData = 1
+
+    @staticmethod
+    def from_dict(d):
+        return StrategyOnFull(d)
+
+    def as_dict(self):
+        return self.value
+
+    def __repr__(self):
+        return "<Enum StrategyOnFull. {}: {}>".format(
+            limitedRepr(self.name), limitedRepr(self.value)
+        )
+
+
+class Persistence(enum.Enum):
+    """
+    Stream persistence. If set to File, the file system will be used to persist messages long-term and is resilient to restarts.
+    Memory should be used when performance matters more than durability as it only stores the stream in memory and never writes to the disk.
+    """
+
+    File = 0
+    Memory = 1
+
+    @staticmethod
+    def from_dict(d):
+        return Persistence(d)
+
+    def as_dict(self):
+        return self.value
+
+    def __repr__(self):
+        return "<Enum Persistence. {}: {}>".format(
+            limitedRepr(self.name), limitedRepr(self.value)
         )
 
 
@@ -2621,6 +2662,290 @@ class KinesisConfig:
         )
 
 
+class IoTSiteWiseConfig:
+    """
+    Configuration object for IotSiteWise data streams export destination. Minimum version requirements: StreamManager server version 1.1 (or AWS IoT Greengrass Core 1.11.0)
+    """
+
+    __slots__ = [
+        "__identifier",
+        "__batch_size",
+        "__batch_interval_millis",
+        "__priority",
+        "__start_sequence_number",
+        "__disabled",
+    ]
+
+    _types_map = {
+        "identifier": {"type": str, "subtype": None},
+        "batch_size": {"type": int, "subtype": None},
+        "batch_interval_millis": {"type": int, "subtype": None},
+        "priority": {"type": int, "subtype": None},
+        "start_sequence_number": {"type": int, "subtype": None},
+        "disabled": {"type": bool, "subtype": None},
+    }
+    _formats_map = {}
+    _validations_map = {
+        "identifier": {
+            "required": True,
+            "minLength": 1,
+            "maxLength": 255,
+            "pattern": "^[\w ,.\-_]*$",
+        },
+        "batch_size": {"required": False, "maximum": 10, "minimum": 1,},
+        "batch_interval_millis": {
+            "required": False,
+            "maximum": 9223372036854,
+            "minimum": 60000,
+        },
+        "priority": {"required": False, "maximum": 10, "minimum": 1,},
+        "start_sequence_number": {
+            "required": False,
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+        },
+        "disabled": {"required": False,},
+    }
+
+    def __init__(
+        self,
+        identifier: str = None,
+        batch_size: int = None,
+        batch_interval_millis: int = None,
+        priority: int = None,
+        start_sequence_number: int = None,
+        disabled: bool = None,
+    ):
+        """
+        :param identifier: A unique identifier to identify this individual upload stream.
+            Must be an alphanumeric string including spaces, commas, periods, hyphens, and underscores with length between 1 and 255.
+        :param batch_size: The maximum size of a batch to send to the destination. Messages will be queued until the batch size is reached, after which they will then be uploaded. If unspecified the default will be 10.
+            If both batchSize and batchIntervalMillis are specified, then messages will be eligible for upload when either condition is met.
+            The minimum batch size is 1 and the maximum is 10.
+        :param batch_interval_millis: The time in milliseconds between the earliest un-uploaded message and the current time. If this time is exceeded, messages will be uploaded in the next batch. If unspecified messages will be eligible for upload immediately.
+            If both batchSize and batchIntervalMillis are specified, then messages will be eligible for upload when either condition is met.
+            The minimum value is 60000 milliseconds and the maximum is 9223372036854 milliseconds.
+        :param priority: Priority for this upload stream. Lower values are higher priority. If not specified it will have the lowest priority.
+        :param start_sequence_number: The sequence number of the message to use as the starting message in the export. Default is 0. The sequence number provided should be less than the newest sequence number in the stream, i.e., sequence number of the last messaged appended. To find the newest sequence number, describe the stream and then check the storage status of the returned MessageStreamInfo object.
+        :param disabled: Enable or disable this export. Default is false.
+        """
+        pass
+        self.__identifier = identifier
+        self.__batch_size = batch_size
+        self.__batch_interval_millis = batch_interval_millis
+        self.__priority = priority
+        self.__start_sequence_number = start_sequence_number
+        self.__disabled = disabled
+
+    def _get_identifier(self):
+        return self.__identifier
+
+    def _set_identifier(self, value):
+        if not isinstance(value, str):
+            raise TypeError("identifier must be str")
+
+        self.__identifier = value
+
+    identifier = property(_get_identifier, _set_identifier)
+    """
+    A unique identifier to identify this individual upload stream.
+    Must be an alphanumeric string including spaces, commas, periods, hyphens, and underscores with length between 1 and 255.
+    """
+
+    def _get_batch_size(self):
+        return self.__batch_size
+
+    def _set_batch_size(self, value):
+        if value is not None and not isinstance(value, int):
+            raise TypeError("batch_size must be int")
+
+        self.__batch_size = value
+
+    batch_size = property(_get_batch_size, _set_batch_size)
+    """
+    The maximum size of a batch to send to the destination. Messages will be queued until the batch size is reached, after which they will then be uploaded. If unspecified the default will be 10.
+    If both batchSize and batchIntervalMillis are specified, then messages will be eligible for upload when either condition is met.
+    The minimum batch size is 1 and the maximum is 10.
+    """
+
+    def _get_batch_interval_millis(self):
+        return self.__batch_interval_millis
+
+    def _set_batch_interval_millis(self, value):
+        if value is not None and not isinstance(value, int):
+            raise TypeError("batch_interval_millis must be int")
+
+        self.__batch_interval_millis = value
+
+    batch_interval_millis = property(
+        _get_batch_interval_millis, _set_batch_interval_millis
+    )
+    """
+    The time in milliseconds between the earliest un-uploaded message and the current time. If this time is exceeded, messages will be uploaded in the next batch. If unspecified messages will be eligible for upload immediately.
+    If both batchSize and batchIntervalMillis are specified, then messages will be eligible for upload when either condition is met.
+    The minimum value is 60000 milliseconds and the maximum is 9223372036854 milliseconds.
+    """
+
+    def _get_priority(self):
+        return self.__priority
+
+    def _set_priority(self, value):
+        if value is not None and not isinstance(value, int):
+            raise TypeError("priority must be int")
+
+        self.__priority = value
+
+    priority = property(_get_priority, _set_priority)
+    """
+    Priority for this upload stream. Lower values are higher priority. If not specified it will have the lowest priority.
+    """
+
+    def _get_start_sequence_number(self):
+        return self.__start_sequence_number
+
+    def _set_start_sequence_number(self, value):
+        if value is not None and not isinstance(value, int):
+            raise TypeError("start_sequence_number must be int")
+
+        self.__start_sequence_number = value
+
+    start_sequence_number = property(
+        _get_start_sequence_number, _set_start_sequence_number
+    )
+    """
+    The sequence number of the message to use as the starting message in the export. Default is 0. The sequence number provided should be less than the newest sequence number in the stream, i.e., sequence number of the last messaged appended. To find the newest sequence number, describe the stream and then check the storage status of the returned MessageStreamInfo object.
+    """
+
+    def _get_disabled(self):
+        return self.__disabled
+
+    def _set_disabled(self, value):
+        if value is not None and not isinstance(value, bool):
+            raise TypeError("disabled must be bool")
+
+        self.__disabled = value
+
+    disabled = property(_get_disabled, _set_disabled)
+    """
+    Enable or disable this export. Default is false.
+    """
+
+    @staticmethod
+    def from_dict(d):
+        v = {}
+        if "identifier" in d:
+            v["identifier"] = (
+                str.from_dict(d["identifier"])
+                if hasattr(str, "from_dict")
+                else d["identifier"]
+            )
+        if "batchSize" in d:
+            v["batch_size"] = (
+                int.from_dict(d["batchSize"])
+                if hasattr(int, "from_dict")
+                else d["batchSize"]
+            )
+        if "batchIntervalMillis" in d:
+            v["batch_interval_millis"] = (
+                int.from_dict(d["batchIntervalMillis"])
+                if hasattr(int, "from_dict")
+                else d["batchIntervalMillis"]
+            )
+        if "priority" in d:
+            v["priority"] = (
+                int.from_dict(d["priority"])
+                if hasattr(int, "from_dict")
+                else d["priority"]
+            )
+        if "startSequenceNumber" in d:
+            v["start_sequence_number"] = (
+                int.from_dict(d["startSequenceNumber"])
+                if hasattr(int, "from_dict")
+                else d["startSequenceNumber"]
+            )
+        if "disabled" in d:
+            v["disabled"] = (
+                bool.from_dict(d["disabled"])
+                if hasattr(bool, "from_dict")
+                else d["disabled"]
+            )
+        return IoTSiteWiseConfig(**v)
+
+    def as_dict(self):
+        d = {}
+        if self.__identifier is not None:
+            d["identifier"] = (
+                self.__identifier.as_dict()
+                if hasattr(self.__identifier, "as_dict")
+                else self.__identifier
+            )
+        if self.__batch_size is not None:
+            d["batchSize"] = (
+                self.__batch_size.as_dict()
+                if hasattr(self.__batch_size, "as_dict")
+                else self.__batch_size
+            )
+        if self.__batch_interval_millis is not None:
+            d["batchIntervalMillis"] = (
+                self.__batch_interval_millis.as_dict()
+                if hasattr(self.__batch_interval_millis, "as_dict")
+                else self.__batch_interval_millis
+            )
+        if self.__priority is not None:
+            d["priority"] = (
+                self.__priority.as_dict()
+                if hasattr(self.__priority, "as_dict")
+                else self.__priority
+            )
+        if self.__start_sequence_number is not None:
+            d["startSequenceNumber"] = (
+                self.__start_sequence_number.as_dict()
+                if hasattr(self.__start_sequence_number, "as_dict")
+                else self.__start_sequence_number
+            )
+        if self.__disabled is not None:
+            d["disabled"] = (
+                self.__disabled.as_dict()
+                if hasattr(self.__disabled, "as_dict")
+                else self.__disabled
+            )
+        return d
+
+    def __repr__(self):
+        return "<Class IoTSiteWiseConfig. identifier: {}, batch_size: {}, batch_interval_millis: {}, priority: {}, start_sequence_number: {}, disabled: {}>".format(
+            limitedRepr(
+                self.__identifier[:20]
+                if isinstance(self.__identifier, bytes)
+                else self.__identifier
+            ),
+            limitedRepr(
+                self.__batch_size[:20]
+                if isinstance(self.__batch_size, bytes)
+                else self.__batch_size
+            ),
+            limitedRepr(
+                self.__batch_interval_millis[:20]
+                if isinstance(self.__batch_interval_millis, bytes)
+                else self.__batch_interval_millis
+            ),
+            limitedRepr(
+                self.__priority[:20]
+                if isinstance(self.__priority, bytes)
+                else self.__priority
+            ),
+            limitedRepr(
+                self.__start_sequence_number[:20]
+                if isinstance(self.__start_sequence_number, bytes)
+                else self.__start_sequence_number
+            ),
+            limitedRepr(
+                self.__disabled[:20]
+                if isinstance(self.__disabled, bytes)
+                else self.__disabled
+            ),
+        )
+
+
 class StatusConfig:
     """
     Configuration for status in a status-stream.
@@ -2970,290 +3295,6 @@ class S3ExportTaskExecutorConfig:
         )
 
 
-class IoTSiteWiseConfig:
-    """
-    Configuration object for IotSiteWise data streams export destination. Minimum version requirements: StreamManager server version 1.1 (or AWS IoT Greengrass Core 1.11.0)
-    """
-
-    __slots__ = [
-        "__identifier",
-        "__batch_size",
-        "__batch_interval_millis",
-        "__priority",
-        "__start_sequence_number",
-        "__disabled",
-    ]
-
-    _types_map = {
-        "identifier": {"type": str, "subtype": None},
-        "batch_size": {"type": int, "subtype": None},
-        "batch_interval_millis": {"type": int, "subtype": None},
-        "priority": {"type": int, "subtype": None},
-        "start_sequence_number": {"type": int, "subtype": None},
-        "disabled": {"type": bool, "subtype": None},
-    }
-    _formats_map = {}
-    _validations_map = {
-        "identifier": {
-            "required": True,
-            "minLength": 1,
-            "maxLength": 255,
-            "pattern": "^[\w ,.\-_]*$",
-        },
-        "batch_size": {"required": False, "maximum": 10, "minimum": 1,},
-        "batch_interval_millis": {
-            "required": False,
-            "maximum": 9223372036854,
-            "minimum": 60000,
-        },
-        "priority": {"required": False, "maximum": 10, "minimum": 1,},
-        "start_sequence_number": {
-            "required": False,
-            "maximum": 9223372036854775807,
-            "minimum": 0,
-        },
-        "disabled": {"required": False,},
-    }
-
-    def __init__(
-        self,
-        identifier: str = None,
-        batch_size: int = None,
-        batch_interval_millis: int = None,
-        priority: int = None,
-        start_sequence_number: int = None,
-        disabled: bool = None,
-    ):
-        """
-        :param identifier: A unique identifier to identify this individual upload stream.
-            Must be an alphanumeric string including spaces, commas, periods, hyphens, and underscores with length between 1 and 255.
-        :param batch_size: The maximum size of a batch to send to the destination. Messages will be queued until the batch size is reached, after which they will then be uploaded. If unspecified the default will be 10.
-            If both batchSize and batchIntervalMillis are specified, then messages will be eligible for upload when either condition is met.
-            The minimum batch size is 1 and the maximum is 10.
-        :param batch_interval_millis: The time in milliseconds between the earliest un-uploaded message and the current time. If this time is exceeded, messages will be uploaded in the next batch. If unspecified messages will be eligible for upload immediately.
-            If both batchSize and batchIntervalMillis are specified, then messages will be eligible for upload when either condition is met.
-            The minimum value is 60000 milliseconds and the maximum is 9223372036854 milliseconds.
-        :param priority: Priority for this upload stream. Lower values are higher priority. If not specified it will have the lowest priority.
-        :param start_sequence_number: The sequence number of the message to use as the starting message in the export. Default is 0. The sequence number provided should be less than the newest sequence number in the stream, i.e., sequence number of the last messaged appended. To find the newest sequence number, describe the stream and then check the storage status of the returned MessageStreamInfo object.
-        :param disabled: Enable or disable this export. Default is false.
-        """
-        pass
-        self.__identifier = identifier
-        self.__batch_size = batch_size
-        self.__batch_interval_millis = batch_interval_millis
-        self.__priority = priority
-        self.__start_sequence_number = start_sequence_number
-        self.__disabled = disabled
-
-    def _get_identifier(self):
-        return self.__identifier
-
-    def _set_identifier(self, value):
-        if not isinstance(value, str):
-            raise TypeError("identifier must be str")
-
-        self.__identifier = value
-
-    identifier = property(_get_identifier, _set_identifier)
-    """
-    A unique identifier to identify this individual upload stream.
-    Must be an alphanumeric string including spaces, commas, periods, hyphens, and underscores with length between 1 and 255.
-    """
-
-    def _get_batch_size(self):
-        return self.__batch_size
-
-    def _set_batch_size(self, value):
-        if value is not None and not isinstance(value, int):
-            raise TypeError("batch_size must be int")
-
-        self.__batch_size = value
-
-    batch_size = property(_get_batch_size, _set_batch_size)
-    """
-    The maximum size of a batch to send to the destination. Messages will be queued until the batch size is reached, after which they will then be uploaded. If unspecified the default will be 10.
-    If both batchSize and batchIntervalMillis are specified, then messages will be eligible for upload when either condition is met.
-    The minimum batch size is 1 and the maximum is 10.
-    """
-
-    def _get_batch_interval_millis(self):
-        return self.__batch_interval_millis
-
-    def _set_batch_interval_millis(self, value):
-        if value is not None and not isinstance(value, int):
-            raise TypeError("batch_interval_millis must be int")
-
-        self.__batch_interval_millis = value
-
-    batch_interval_millis = property(
-        _get_batch_interval_millis, _set_batch_interval_millis
-    )
-    """
-    The time in milliseconds between the earliest un-uploaded message and the current time. If this time is exceeded, messages will be uploaded in the next batch. If unspecified messages will be eligible for upload immediately.
-    If both batchSize and batchIntervalMillis are specified, then messages will be eligible for upload when either condition is met.
-    The minimum value is 60000 milliseconds and the maximum is 9223372036854 milliseconds.
-    """
-
-    def _get_priority(self):
-        return self.__priority
-
-    def _set_priority(self, value):
-        if value is not None and not isinstance(value, int):
-            raise TypeError("priority must be int")
-
-        self.__priority = value
-
-    priority = property(_get_priority, _set_priority)
-    """
-    Priority for this upload stream. Lower values are higher priority. If not specified it will have the lowest priority.
-    """
-
-    def _get_start_sequence_number(self):
-        return self.__start_sequence_number
-
-    def _set_start_sequence_number(self, value):
-        if value is not None and not isinstance(value, int):
-            raise TypeError("start_sequence_number must be int")
-
-        self.__start_sequence_number = value
-
-    start_sequence_number = property(
-        _get_start_sequence_number, _set_start_sequence_number
-    )
-    """
-    The sequence number of the message to use as the starting message in the export. Default is 0. The sequence number provided should be less than the newest sequence number in the stream, i.e., sequence number of the last messaged appended. To find the newest sequence number, describe the stream and then check the storage status of the returned MessageStreamInfo object.
-    """
-
-    def _get_disabled(self):
-        return self.__disabled
-
-    def _set_disabled(self, value):
-        if value is not None and not isinstance(value, bool):
-            raise TypeError("disabled must be bool")
-
-        self.__disabled = value
-
-    disabled = property(_get_disabled, _set_disabled)
-    """
-    Enable or disable this export. Default is false.
-    """
-
-    @staticmethod
-    def from_dict(d):
-        v = {}
-        if "identifier" in d:
-            v["identifier"] = (
-                str.from_dict(d["identifier"])
-                if hasattr(str, "from_dict")
-                else d["identifier"]
-            )
-        if "batchSize" in d:
-            v["batch_size"] = (
-                int.from_dict(d["batchSize"])
-                if hasattr(int, "from_dict")
-                else d["batchSize"]
-            )
-        if "batchIntervalMillis" in d:
-            v["batch_interval_millis"] = (
-                int.from_dict(d["batchIntervalMillis"])
-                if hasattr(int, "from_dict")
-                else d["batchIntervalMillis"]
-            )
-        if "priority" in d:
-            v["priority"] = (
-                int.from_dict(d["priority"])
-                if hasattr(int, "from_dict")
-                else d["priority"]
-            )
-        if "startSequenceNumber" in d:
-            v["start_sequence_number"] = (
-                int.from_dict(d["startSequenceNumber"])
-                if hasattr(int, "from_dict")
-                else d["startSequenceNumber"]
-            )
-        if "disabled" in d:
-            v["disabled"] = (
-                bool.from_dict(d["disabled"])
-                if hasattr(bool, "from_dict")
-                else d["disabled"]
-            )
-        return IoTSiteWiseConfig(**v)
-
-    def as_dict(self):
-        d = {}
-        if self.__identifier is not None:
-            d["identifier"] = (
-                self.__identifier.as_dict()
-                if hasattr(self.__identifier, "as_dict")
-                else self.__identifier
-            )
-        if self.__batch_size is not None:
-            d["batchSize"] = (
-                self.__batch_size.as_dict()
-                if hasattr(self.__batch_size, "as_dict")
-                else self.__batch_size
-            )
-        if self.__batch_interval_millis is not None:
-            d["batchIntervalMillis"] = (
-                self.__batch_interval_millis.as_dict()
-                if hasattr(self.__batch_interval_millis, "as_dict")
-                else self.__batch_interval_millis
-            )
-        if self.__priority is not None:
-            d["priority"] = (
-                self.__priority.as_dict()
-                if hasattr(self.__priority, "as_dict")
-                else self.__priority
-            )
-        if self.__start_sequence_number is not None:
-            d["startSequenceNumber"] = (
-                self.__start_sequence_number.as_dict()
-                if hasattr(self.__start_sequence_number, "as_dict")
-                else self.__start_sequence_number
-            )
-        if self.__disabled is not None:
-            d["disabled"] = (
-                self.__disabled.as_dict()
-                if hasattr(self.__disabled, "as_dict")
-                else self.__disabled
-            )
-        return d
-
-    def __repr__(self):
-        return "<Class IoTSiteWiseConfig. identifier: {}, batch_size: {}, batch_interval_millis: {}, priority: {}, start_sequence_number: {}, disabled: {}>".format(
-            limitedRepr(
-                self.__identifier[:20]
-                if isinstance(self.__identifier, bytes)
-                else self.__identifier
-            ),
-            limitedRepr(
-                self.__batch_size[:20]
-                if isinstance(self.__batch_size, bytes)
-                else self.__batch_size
-            ),
-            limitedRepr(
-                self.__batch_interval_millis[:20]
-                if isinstance(self.__batch_interval_millis, bytes)
-                else self.__batch_interval_millis
-            ),
-            limitedRepr(
-                self.__priority[:20]
-                if isinstance(self.__priority, bytes)
-                else self.__priority
-            ),
-            limitedRepr(
-                self.__start_sequence_number[:20]
-                if isinstance(self.__start_sequence_number, bytes)
-                else self.__start_sequence_number
-            ),
-            limitedRepr(
-                self.__disabled[:20]
-                if isinstance(self.__disabled, bytes)
-                else self.__disabled
-            ),
-        )
-
-
 class ExportDefinition:
     """
     Defines how and where the stream is uploaded.
@@ -3480,52 +3521,6 @@ class ExportDefinition:
                 if isinstance(self.__s3_task_executor, bytes)
                 else self.__s3_task_executor
             ),
-        )
-
-
-class Persistence(enum.Enum):
-    """
-    Stream persistence. If set to File, the file system will be used to persist messages long-term and is resilient to restarts.
-    Memory should be used when performance matters more than durability as it only stores the stream in memory and never writes to the disk.
-    """
-
-    File = 0
-    Memory = 1
-
-    @staticmethod
-    def from_dict(d):
-        return Persistence(d)
-
-    def as_dict(self):
-        return self.value
-
-    def __repr__(self):
-        return "<Enum Persistence. {}: {}>".format(
-            limitedRepr(self.name), limitedRepr(self.value)
-        )
-
-
-class StrategyOnFull(enum.Enum):
-    """
-    StrategyOnFull is used in the MessageStreamDefinition when creating a stream.
-    It defines the behavior when the stream has reached the maximum size.
-    RejectNewData: any append message request after the stream is full will be rejected with an exception.
-    OverwriteOldestData: the oldest stream segments will be deleted until there is room for the new message.
-    """
-
-    RejectNewData = 0
-    OverwriteOldestData = 1
-
-    @staticmethod
-    def from_dict(d):
-        return StrategyOnFull(d)
-
-    def as_dict(self):
-        return self.value
-
-    def __repr__(self):
-        return "<Enum StrategyOnFull. {}: {}>".format(
-            limitedRepr(self.name), limitedRepr(self.value)
         )
 
 
@@ -6600,134 +6595,6 @@ class ListStreamsResponse:
         )
 
 
-class TimeInNanos:
-    """
-    Contains a timestamp with optional nanosecond granularity.
-    """
-
-    __slots__ = [
-        "__time_in_seconds",
-        "__offset_in_nanos",
-    ]
-
-    _types_map = {
-        "time_in_seconds": {"type": int, "subtype": None},
-        "offset_in_nanos": {"type": int, "subtype": None},
-    }
-    _formats_map = {}
-    _validations_map = {
-        "time_in_seconds": {
-            "required": True,
-            "maximum": 31556889864403199,
-            "minimum": 1,
-        },
-        "offset_in_nanos": {"required": False, "maximum": 999999999, "minimum": 0,},
-    }
-
-    def __init__(self, time_in_seconds: int = None, offset_in_nanos: int = None):
-        """
-        :param time_in_seconds: The timestamp date, in seconds, in the Unix epoch format. Fractional nanosecond data is provided by offsetInNanos.
-        :param offset_in_nanos: The nanosecond offset from timeInSeconds.
-        """
-        pass
-        self.__time_in_seconds = time_in_seconds
-        self.__offset_in_nanos = offset_in_nanos
-
-    def _get_time_in_seconds(self):
-        return self.__time_in_seconds
-
-    def _set_time_in_seconds(self, value):
-        if not isinstance(value, int):
-            raise TypeError("time_in_seconds must be int")
-
-        self.__time_in_seconds = value
-
-    time_in_seconds = property(_get_time_in_seconds, _set_time_in_seconds)
-    """
-    The timestamp date, in seconds, in the Unix epoch format. Fractional nanosecond data is provided by offsetInNanos.
-    """
-
-    def _get_offset_in_nanos(self):
-        return self.__offset_in_nanos
-
-    def _set_offset_in_nanos(self, value):
-        if value is not None and not isinstance(value, int):
-            raise TypeError("offset_in_nanos must be int")
-
-        self.__offset_in_nanos = value
-
-    offset_in_nanos = property(_get_offset_in_nanos, _set_offset_in_nanos)
-    """
-    The nanosecond offset from timeInSeconds.
-    """
-
-    @staticmethod
-    def from_dict(d):
-        v = {}
-        if "timeInSeconds" in d:
-            v["time_in_seconds"] = (
-                int.from_dict(d["timeInSeconds"])
-                if hasattr(int, "from_dict")
-                else d["timeInSeconds"]
-            )
-        if "offsetInNanos" in d:
-            v["offset_in_nanos"] = (
-                int.from_dict(d["offsetInNanos"])
-                if hasattr(int, "from_dict")
-                else d["offsetInNanos"]
-            )
-        return TimeInNanos(**v)
-
-    def as_dict(self):
-        d = {}
-        if self.__time_in_seconds is not None:
-            d["timeInSeconds"] = (
-                self.__time_in_seconds.as_dict()
-                if hasattr(self.__time_in_seconds, "as_dict")
-                else self.__time_in_seconds
-            )
-        if self.__offset_in_nanos is not None:
-            d["offsetInNanos"] = (
-                self.__offset_in_nanos.as_dict()
-                if hasattr(self.__offset_in_nanos, "as_dict")
-                else self.__offset_in_nanos
-            )
-        return d
-
-    def __repr__(self):
-        return "<Class TimeInNanos. time_in_seconds: {}, offset_in_nanos: {}>".format(
-            limitedRepr(
-                self.__time_in_seconds[:20]
-                if isinstance(self.__time_in_seconds, bytes)
-                else self.__time_in_seconds
-            ),
-            limitedRepr(
-                self.__offset_in_nanos[:20]
-                if isinstance(self.__offset_in_nanos, bytes)
-                else self.__offset_in_nanos
-            ),
-        )
-
-
-class Quality(enum.Enum):
-
-    GOOD = "GOOD"
-    BAD = "BAD"
-    UNCERTAIN = "UNCERTAIN"
-
-    @staticmethod
-    def from_dict(d):
-        return Quality(d)
-
-    def as_dict(self):
-        return self.value
-
-    def __repr__(self):
-        return "<Enum Quality. {}: {}>".format(
-            limitedRepr(self.name), limitedRepr(self.value)
-        )
-
-
 class Variant:
     """
     Contains an asset property value (of a single type only).
@@ -6912,6 +6779,134 @@ class Variant:
                 self.__boolean_value[:20]
                 if isinstance(self.__boolean_value, bytes)
                 else self.__boolean_value
+            ),
+        )
+
+
+class Quality(enum.Enum):
+
+    GOOD = "GOOD"
+    BAD = "BAD"
+    UNCERTAIN = "UNCERTAIN"
+
+    @staticmethod
+    def from_dict(d):
+        return Quality(d)
+
+    def as_dict(self):
+        return self.value
+
+    def __repr__(self):
+        return "<Enum Quality. {}: {}>".format(
+            limitedRepr(self.name), limitedRepr(self.value)
+        )
+
+
+class TimeInNanos:
+    """
+    Contains a timestamp with optional nanosecond granularity.
+    """
+
+    __slots__ = [
+        "__time_in_seconds",
+        "__offset_in_nanos",
+    ]
+
+    _types_map = {
+        "time_in_seconds": {"type": int, "subtype": None},
+        "offset_in_nanos": {"type": int, "subtype": None},
+    }
+    _formats_map = {}
+    _validations_map = {
+        "time_in_seconds": {
+            "required": True,
+            "maximum": 31556889864403199,
+            "minimum": 1,
+        },
+        "offset_in_nanos": {"required": False, "maximum": 999999999, "minimum": 0,},
+    }
+
+    def __init__(self, time_in_seconds: int = None, offset_in_nanos: int = None):
+        """
+        :param time_in_seconds: The timestamp date, in seconds, in the Unix epoch format. Fractional nanosecond data is provided by offsetInNanos.
+        :param offset_in_nanos: The nanosecond offset from timeInSeconds.
+        """
+        pass
+        self.__time_in_seconds = time_in_seconds
+        self.__offset_in_nanos = offset_in_nanos
+
+    def _get_time_in_seconds(self):
+        return self.__time_in_seconds
+
+    def _set_time_in_seconds(self, value):
+        if not isinstance(value, int):
+            raise TypeError("time_in_seconds must be int")
+
+        self.__time_in_seconds = value
+
+    time_in_seconds = property(_get_time_in_seconds, _set_time_in_seconds)
+    """
+    The timestamp date, in seconds, in the Unix epoch format. Fractional nanosecond data is provided by offsetInNanos.
+    """
+
+    def _get_offset_in_nanos(self):
+        return self.__offset_in_nanos
+
+    def _set_offset_in_nanos(self, value):
+        if value is not None and not isinstance(value, int):
+            raise TypeError("offset_in_nanos must be int")
+
+        self.__offset_in_nanos = value
+
+    offset_in_nanos = property(_get_offset_in_nanos, _set_offset_in_nanos)
+    """
+    The nanosecond offset from timeInSeconds.
+    """
+
+    @staticmethod
+    def from_dict(d):
+        v = {}
+        if "timeInSeconds" in d:
+            v["time_in_seconds"] = (
+                int.from_dict(d["timeInSeconds"])
+                if hasattr(int, "from_dict")
+                else d["timeInSeconds"]
+            )
+        if "offsetInNanos" in d:
+            v["offset_in_nanos"] = (
+                int.from_dict(d["offsetInNanos"])
+                if hasattr(int, "from_dict")
+                else d["offsetInNanos"]
+            )
+        return TimeInNanos(**v)
+
+    def as_dict(self):
+        d = {}
+        if self.__time_in_seconds is not None:
+            d["timeInSeconds"] = (
+                self.__time_in_seconds.as_dict()
+                if hasattr(self.__time_in_seconds, "as_dict")
+                else self.__time_in_seconds
+            )
+        if self.__offset_in_nanos is not None:
+            d["offsetInNanos"] = (
+                self.__offset_in_nanos.as_dict()
+                if hasattr(self.__offset_in_nanos, "as_dict")
+                else self.__offset_in_nanos
+            )
+        return d
+
+    def __repr__(self):
+        return "<Class TimeInNanos. time_in_seconds: {}, offset_in_nanos: {}>".format(
+            limitedRepr(
+                self.__time_in_seconds[:20]
+                if isinstance(self.__time_in_seconds, bytes)
+                else self.__time_in_seconds
+            ),
+            limitedRepr(
+                self.__offset_in_nanos[:20]
+                if isinstance(self.__offset_in_nanos, bytes)
+                else self.__offset_in_nanos
             ),
         )
 

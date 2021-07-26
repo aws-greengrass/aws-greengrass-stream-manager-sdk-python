@@ -29,6 +29,13 @@ site-packages directory. To find its location, use :code:`python -m site --user-
 entire user site package directory contents into the final artifact before deploying which will ensure that the Stream
 Manager dependencies are present.
 
+## Installation
+
+One way to install both stream-manager and its dependencies (i.e. cbor) is to run the following command:
+```console
+pip install git+https://github.com/aws-greengrass/aws-greengrass-stream-manager-sdk-python.git
+```
+
 <div class="Section" id="1.1.0updates">
 
 ## 1.1.0 Updates[¶](#1.1.0updates "Permalink to this headline")
