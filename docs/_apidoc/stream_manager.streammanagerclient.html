@@ -151,9 +151,9 @@
 <span id="stream-manager-streammanagerclient-module"></span><h1>stream_manager.streammanagerclient module<a class="headerlink" href="#module-stream_manager.streammanagerclient" title="Permalink to this headline">¶</a></h1>
 <p>Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0</p>
-<dl class="class">
+<dl class="py class">
 <dt id="stream_manager.streammanagerclient.StreamManagerClient">
-<em class="property">class </em><code class="sig-prename descclassname">stream_manager.streammanagerclient.</code><code class="sig-name descname">StreamManagerClient</code><span class="sig-paren">(</span><em class="sig-param">host='127.0.0.1'</em>, <em class="sig-param">port=None</em>, <em class="sig-param">connect_timeout=3</em>, <em class="sig-param">request_timeout=60</em>, <em class="sig-param">logger=&lt;Logger StreamManagerClient (WARNING)&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream_manager/streammanagerclient.html#StreamManagerClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream_manager.streammanagerclient.StreamManagerClient" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">stream_manager.streammanagerclient.</span></code><code class="sig-name descname"><span class="pre">StreamManagerClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">host='127.0.0.1'</span></em>, <em class="sig-param"><span class="pre">port=None</span></em>, <em class="sig-param"><span class="pre">connect_timeout=3</span></em>, <em class="sig-param"><span class="pre">request_timeout=60</span></em>, <em class="sig-param"><span class="pre">logger=&lt;Logger</span> <span class="pre">StreamManagerClient</span> <span class="pre">(WARNING)&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream_manager/streammanagerclient.html#StreamManagerClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream_manager.streammanagerclient.StreamManagerClient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Creates a client for the Greengrass StreamManager. All parameters are optional.</p>
 <dl class="field-list simple">
@@ -176,9 +176,9 @@ SPDX-License-Identifier: Apache-2.0</p>
 <dd class="field-even"><p><code class="xref py py-exc docutils literal notranslate"><span class="pre">ConnectionError</span></code> if the client is unable to connect to the server.</p>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="stream_manager.streammanagerclient.StreamManagerClient.read_messages">
-<code class="sig-name descname">read_messages</code><span class="sig-paren">(</span><em class="sig-param">stream_name: str</em>, <em class="sig-param">options: Optional[stream_manager.data.ReadMessagesOptions] = None</em><span class="sig-paren">)</span> &#x2192; List[stream_manager.data.Message]<a class="reference internal" href="../_modules/stream_manager/streammanagerclient.html#StreamManagerClient.read_messages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream_manager.streammanagerclient.StreamManagerClient.read_messages" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">read_messages</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="stream_manager.data.html#stream_manager.data.ReadMessagesOptions" title="stream_manager.data.ReadMessagesOptions"><span class="pre">stream_manager.data.ReadMessagesOptions</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="stream_manager.data.html#stream_manager.data.Message" title="stream_manager.data.Message"><span class="pre">stream_manager.data.Message</span></a><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../_modules/stream_manager/streammanagerclient.html#StreamManagerClient.read_messages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream_manager.streammanagerclient.StreamManagerClient.read_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read message(s) from a chosen stream with options. If no options are specified it will try to read
 1 message from the stream.</p>
 <dl class="field-list simple">
@@ -218,9 +218,9 @@ at the beginning of the stream and not necessarily the desired_start_sequence_nu
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="stream_manager.streammanagerclient.StreamManagerClient.append_message">
-<code class="sig-name descname">append_message</code><span class="sig-paren">(</span><em class="sig-param">stream_name: str</em>, <em class="sig-param">data: bytes</em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="../_modules/stream_manager/streammanagerclient.html#StreamManagerClient.append_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream_manager.streammanagerclient.StreamManagerClient.append_message" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">append_message</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="reference internal" href="../_modules/stream_manager/streammanagerclient.html#StreamManagerClient.append_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream_manager.streammanagerclient.StreamManagerClient.append_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Append a message into the specified message stream. Returns the sequence number of the message
 if it was successfully appended.</p>
 <dl class="field-list simple">
@@ -245,9 +245,9 @@ if it was successfully appended.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="stream_manager.streammanagerclient.StreamManagerClient.create_message_stream">
-<code class="sig-name descname">create_message_stream</code><span class="sig-paren">(</span><em class="sig-param">definition: stream_manager.data.MessageStreamDefinition</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/stream_manager/streammanagerclient.html#StreamManagerClient.create_message_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream_manager.streammanagerclient.StreamManagerClient.create_message_stream" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">create_message_stream</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">definition</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="stream_manager.data.html#stream_manager.data.MessageStreamDefinition" title="stream_manager.data.MessageStreamDefinition"><span class="pre">stream_manager.data.MessageStreamDefinition</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../_modules/stream_manager/streammanagerclient.html#StreamManagerClient.create_message_stream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream_manager.streammanagerclient.StreamManagerClient.create_message_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a message stream with a given definition.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -268,9 +268,9 @@ if it was successfully appended.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="stream_manager.streammanagerclient.StreamManagerClient.delete_message_stream">
-<code class="sig-name descname">delete_message_stream</code><span class="sig-paren">(</span><em class="sig-param">stream_name: str</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/stream_manager/streammanagerclient.html#StreamManagerClient.delete_message_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream_manager.streammanagerclient.StreamManagerClient.delete_message_stream" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">delete_message_stream</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../_modules/stream_manager/streammanagerclient.html#StreamManagerClient.delete_message_stream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream_manager.streammanagerclient.StreamManagerClient.delete_message_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a message stream based on its name. Nothing is returned if the request succeeds,
 a subtype of <a class="reference internal" href="stream_manager.exceptions.html#stream_manager.exceptions.StreamManagerException" title="stream_manager.exceptions.StreamManagerException"><code class="xref py py-exc docutils literal notranslate"><span class="pre">StreamManagerException</span></code></a> will be raised if an error occurs.</p>
 <dl class="field-list simple">
@@ -292,9 +292,9 @@ a subtype of <a class="reference internal" href="stream_manager.exceptions.html#
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="stream_manager.streammanagerclient.StreamManagerClient.update_message_stream">
-<code class="sig-name descname">update_message_stream</code><span class="sig-paren">(</span><em class="sig-param">definition: stream_manager.data.MessageStreamDefinition</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/stream_manager/streammanagerclient.html#StreamManagerClient.update_message_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream_manager.streammanagerclient.StreamManagerClient.update_message_stream" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">update_message_stream</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">definition</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="stream_manager.data.html#stream_manager.data.MessageStreamDefinition" title="stream_manager.data.MessageStreamDefinition"><span class="pre">stream_manager.data.MessageStreamDefinition</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../_modules/stream_manager/streammanagerclient.html#StreamManagerClient.update_message_stream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream_manager.streammanagerclient.StreamManagerClient.update_message_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates a message stream based on a given definition.
 Minimum version requirements: StreamManager server version 1.1 (or AWS IoT Greengrass Core 1.11.0)</p>
 <dl class="field-list simple">
@@ -316,9 +316,9 @@ Minimum version requirements: StreamManager server version 1.1 (or AWS IoT Green
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="stream_manager.streammanagerclient.StreamManagerClient.list_streams">
-<code class="sig-name descname">list_streams</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[str]<a class="reference internal" href="../_modules/stream_manager/streammanagerclient.html#StreamManagerClient.list_streams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream_manager.streammanagerclient.StreamManagerClient.list_streams" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">list_streams</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../_modules/stream_manager/streammanagerclient.html#StreamManagerClient.list_streams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream_manager.streammanagerclient.StreamManagerClient.list_streams" title="Permalink to this definition">¶</a></dt>
 <dd><p>List the streams in StreamManager. Returns a list of their names.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -336,9 +336,9 @@ Minimum version requirements: StreamManager server version 1.1 (or AWS IoT Green
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="stream_manager.streammanagerclient.StreamManagerClient.describe_message_stream">
-<code class="sig-name descname">describe_message_stream</code><span class="sig-paren">(</span><em class="sig-param">stream_name: str</em><span class="sig-paren">)</span> &#x2192; stream_manager.data.MessageStreamInfo<a class="reference internal" href="../_modules/stream_manager/streammanagerclient.html#StreamManagerClient.describe_message_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream_manager.streammanagerclient.StreamManagerClient.describe_message_stream" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">describe_message_stream</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="stream_manager.data.html#stream_manager.data.MessageStreamInfo" title="stream_manager.data.MessageStreamInfo"><span class="pre">stream_manager.data.MessageStreamInfo</span></a><a class="reference internal" href="../_modules/stream_manager/streammanagerclient.html#StreamManagerClient.describe_message_stream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream_manager.streammanagerclient.StreamManagerClient.describe_message_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Describe a message stream to get metadata including the stream’s definition,
 size, and exporter statuses.</p>
 <dl class="field-list simple">
@@ -360,9 +360,9 @@ size, and exporter statuses.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="stream_manager.streammanagerclient.StreamManagerClient.close">
-<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream_manager/streammanagerclient.html#StreamManagerClient.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream_manager.streammanagerclient.StreamManagerClient.close" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream_manager/streammanagerclient.html#StreamManagerClient.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream_manager.streammanagerclient.StreamManagerClient.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Call to shutdown the client and close all existing connections. Once a client is closed it cannot be reused.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises</dt>
@@ -419,7 +419,6 @@ size, and exporter statuses.</p>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="../_static/language_data.js"></script>
 
   
 
