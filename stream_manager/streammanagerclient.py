@@ -111,6 +111,12 @@ class StreamManagerClient:
         self.connected = False
         UtilInternal.sync(self.__connect(), loop=self.__loop)
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.close()
+
     async def _close(self):
         if self.__writer is not None:
             self.__closed = True
