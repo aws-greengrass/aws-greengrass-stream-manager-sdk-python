@@ -13,6 +13,8 @@ SDK.
 Follow the guide [here](https://docs.aws.amazon.com/greengrass/v2/developerguide/work-with-streams.html) to work
 with Streams using the Stream Manager Client from the Stream Manager SDK.
 
+View Python SDK documentation [here](https://aws-greengrass.github.io/aws-greengrass-stream-manager-sdk-python/).
+
 ## Compatibility
 
 Stream Manager SDK provided by this repo is compatible with Stream Manager running on Greengrass Core 1.11 and above.
@@ -33,20 +35,12 @@ Manager dependencies are present.
 
 One way to install both stream-manager and its dependencies (i.e. cbor) is to run the following command:
 ```console
-pip install git+https://github.com/aws-greengrass/aws-greengrass-stream-manager-sdk-python.git
+pip3 install stream_manager
 ```
-
-<div class="Section" id="1.1.0updates">
-
-## 1.1.0 Updates[¶](#1.1.0updates "Permalink to this headline")
-
-Stream manager supports automatic data export to AWS S3 and AWS IoT SiteWise, provides new API method to update existing streams, and pause or resume exporting.
-
-</div>
 
 ## Getting Help
 
-*   [Ask on a Greengrass forum](https://forums.aws.amazon.com/forum.jspa?forumID=254)
+*   [Ask on AWS re:Post](https://repost.aws/)
 
 ## License
 

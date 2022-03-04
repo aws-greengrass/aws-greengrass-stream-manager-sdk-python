@@ -41,10 +41,12 @@ from .data import (
 from .exceptions import ClientException, ConnectFailedException, StreamManagerException, ValidationException
 from .utilinternal import UtilInternal
 
-# Version of the Java SDK.
-# NOTE: When you bump this version,
-# consider adding the old version to __OLD_SUPPORTED_PROTOCOL_VERSIONS list (if you intend to support it)
-SDK_VERSION = "1.1.0"
+# Version of the Python SDK.
+# NOTE: This version is independent of the StreamManager PROTOCOL_VERSION, which versions the data format
+#  over the wire. When bumping the PROTOCOL_VERSION, consider adding the old version to
+#  __OLD_SUPPORTED_PROTOCOL_VERSIONS list (if you intend to support it). Nothing else is needed to bump
+#  this SDK_VERSION.
+SDK_VERSION = "1.1.1"
 
 
 class StreamManagerClient:
@@ -111,6 +113,12 @@ class StreamManagerClient:
         self.connected = False
         UtilInternal.sync(self.__connect(), loop=self.__loop)
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.close()
+
     async def _close(self):
         if self.__writer is not None:
             self.__closed = True
@@ -136,12 +144,12 @@ class StreamManagerClient:
             return
         try:
             self.logger.debug("Opening connection to %s:%d", self.host, self.port)
-            future = asyncio.open_connection(self.host, self.port, loop=self.__loop)
+            future = asyncio.open_connection(self.host, self.port)
             self.__reader, self.__writer = await asyncio.wait_for(
-                future, timeout=self.connect_timeout, loop=self.__loop
+                future, timeout=self.connect_timeout
             )
 
-            await asyncio.wait_for(self.__connect_request_response(), timeout=self.request_timeout, loop=self.__loop)
+            await asyncio.wait_for(self.__connect_request_response(), timeout=self.request_timeout)
 
             self.logger.debug("Socket connected successfully. Starting read loop.")
             self.connected = True
@@ -342,7 +350,7 @@ class StreamManagerClient:
 
         # Perform the actual work as async so that we can put a timeout on the whole operation
         try:
-            return await asyncio.wait_for(inner(operation, data), timeout=self.request_timeout, loop=self.__loop)
+            return await asyncio.wait_for(inner(operation, data), timeout=self.request_timeout)
         except asyncio.TimeoutError:
             # Drop async queue from request map
             del self.__requests[data.request_id]

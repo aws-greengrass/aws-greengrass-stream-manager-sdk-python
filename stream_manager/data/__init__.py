@@ -47,11 +47,23 @@ class ConnectRequest:
     }
     _formats_map = {}
     _validations_map = {
-        "request_id": {"required": True, "minLength": 1, "pattern": "^[\w ,.\-_]*$",},
-        "protocol_version": {"required": True,},
-        "other_supported_protocol_versions": {"required": False,},
-        "sdk_version": {"required": False,},
-        "auth_token": {"required": False,},
+        "request_id": {
+            "required": True,
+            "minLength": 1,
+            "pattern": "^[\w ,.\-_]*$",
+        },
+        "protocol_version": {
+            "required": True,
+        },
+        "other_supported_protocol_versions": {
+            "required": False,
+        },
+        "sdk_version": {
+            "required": False,
+        },
+        "auth_token": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -308,13 +320,29 @@ class ConnectResponse:
     }
     _formats_map = {}
     _validations_map = {
-        "request_id": {"required": False, "minLength": 1, "pattern": "^[\w ,.\-_]*$",},
-        "status": {"required": True,},
-        "error_message": {"required": False,},
-        "protocol_version": {"required": False,},
-        "supported_protocol_versions": {"required": False,},
-        "server_version": {"required": False,},
-        "client_identifier": {"required": False,},
+        "request_id": {
+            "required": False,
+            "minLength": 1,
+            "pattern": "^[\w ,.\-_]*$",
+        },
+        "status": {
+            "required": True,
+        },
+        "error_message": {
+            "required": False,
+        },
+        "protocol_version": {
+            "required": False,
+        },
+        "supported_protocol_versions": {
+            "required": False,
+        },
+        "server_version": {
+            "required": False,
+        },
+        "client_identifier": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -601,8 +629,12 @@ class MessageFrame:
     }
     _formats_map = {}
     _validations_map = {
-        "operation": {"required": True,},
-        "payload": {"required": True,},
+        "operation": {
+            "required": True,
+        },
+        "payload": {
+            "required": True,
+        },
     }
 
     def __init__(self, operation: Operation = None, payload: bytes = None):
@@ -680,74 +712,6 @@ class MessageFrame:
         )
 
 
-class StatusLevel(enum.Enum):
-    """
-    Defines the verbosity of status messages in a status-stream.
-    """
-
-    ERROR = 0
-    WARN = 1
-    INFO = 2
-    DEBUG = 3
-    TRACE = 4
-
-    @staticmethod
-    def from_dict(d):
-        return StatusLevel(d)
-
-    def as_dict(self):
-        return self.value
-
-    def __repr__(self):
-        return "<Enum StatusLevel. {}: {}>".format(
-            limitedRepr(self.name), limitedRepr(self.value)
-        )
-
-
-class Status(enum.Enum):
-    """
-    The status of the event.
-    """
-
-    Success = 0
-    Failure = 1
-    InProgress = 2
-    Warning = 3
-    Canceled = 4
-
-    @staticmethod
-    def from_dict(d):
-        return Status(d)
-
-    def as_dict(self):
-        return self.value
-
-    def __repr__(self):
-        return "<Enum Status. {}: {}>".format(
-            limitedRepr(self.name), limitedRepr(self.value)
-        )
-
-
-class EventType(enum.Enum):
-    """
-    The type of event, which determines how to interpret the status payload.
-    """
-
-    S3Task = 0
-
-    @staticmethod
-    def from_dict(d):
-        return EventType(d)
-
-    def as_dict(self):
-        return self.value
-
-    def __repr__(self):
-        return "<Enum EventType. {}: {}>".format(
-            limitedRepr(self.name), limitedRepr(self.value)
-        )
-
-
 class S3ExportTaskDefinition:
     """
     S3 Task definition containing all the information necessary to export the data to S3. This will contain the S3 bucket and key as well as the file's URL where the data is stored.
@@ -768,7 +732,9 @@ class S3ExportTaskDefinition:
     }
     _formats_map = {}
     _validations_map = {
-        "input_url": {"required": True,},
+        "input_url": {
+            "required": True,
+        },
         "bucket": {
             "required": True,
             "minLength": 3,
@@ -781,7 +747,9 @@ class S3ExportTaskDefinition:
             "maxLength": 1024,
             "pattern": "^([^\\\{ \}%\`\[\]\"'\>\<\~\#\^\?\|]|!\{[a-zA-Z]+:[a-zA-Z\/]+\})*$",
         },
-        "user_metadata": {"required": False,},
+        "user_metadata": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -957,10 +925,18 @@ class StatusContext:
     }
     _formats_map = {}
     _validations_map = {
-        "s3_export_task_definition": {"required": False,},
-        "export_identifier": {"required": False,},
-        "stream_name": {"required": False,},
-        "sequence_number": {"required": False,},
+        "s3_export_task_definition": {
+            "required": False,
+        },
+        "export_identifier": {
+            "required": False,
+        },
+        "stream_name": {
+            "required": False,
+        },
+        "sequence_number": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -1122,6 +1098,74 @@ class StatusContext:
         )
 
 
+class Status(enum.Enum):
+    """
+    The status of the event.
+    """
+
+    Success = 0
+    Failure = 1
+    InProgress = 2
+    Warning = 3
+    Canceled = 4
+
+    @staticmethod
+    def from_dict(d):
+        return Status(d)
+
+    def as_dict(self):
+        return self.value
+
+    def __repr__(self):
+        return "<Enum Status. {}: {}>".format(
+            limitedRepr(self.name), limitedRepr(self.value)
+        )
+
+
+class EventType(enum.Enum):
+    """
+    The type of event, which determines how to interpret the status payload.
+    """
+
+    S3Task = 0
+
+    @staticmethod
+    def from_dict(d):
+        return EventType(d)
+
+    def as_dict(self):
+        return self.value
+
+    def __repr__(self):
+        return "<Enum EventType. {}: {}>".format(
+            limitedRepr(self.name), limitedRepr(self.value)
+        )
+
+
+class StatusLevel(enum.Enum):
+    """
+    Defines the verbosity of status messages in a status-stream.
+    """
+
+    ERROR = 0
+    WARN = 1
+    INFO = 2
+    DEBUG = 3
+    TRACE = 4
+
+    @staticmethod
+    def from_dict(d):
+        return StatusLevel(d)
+
+    def as_dict(self):
+        return self.value
+
+    def __repr__(self):
+        return "<Enum StatusLevel. {}: {}>".format(
+            limitedRepr(self.name), limitedRepr(self.value)
+        )
+
+
 class StatusMessage:
     """
     Status object appended to a status-stream.
@@ -1146,12 +1190,24 @@ class StatusMessage:
     }
     _formats_map = {}
     _validations_map = {
-        "event_type": {"required": True,},
-        "status_level": {"required": False,},
-        "status": {"required": True,},
-        "status_context": {"required": False,},
-        "message": {"required": False,},
-        "timestamp_epoch_ms": {"required": False,},
+        "event_type": {
+            "required": True,
+        },
+        "status_level": {
+            "required": False,
+        },
+        "status": {
+            "required": True,
+        },
+        "status_context": {
+            "required": False,
+        },
+        "message": {
+            "required": False,
+        },
+        "timestamp_epoch_ms": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -1377,7 +1433,11 @@ class TraceableRequest:
     }
     _formats_map = {}
     _validations_map = {
-        "request_id": {"required": True, "minLength": 1, "pattern": "^[\w ,.\-_]*$",},
+        "request_id": {
+            "required": True,
+            "minLength": 1,
+            "pattern": "^[\w ,.\-_]*$",
+        },
     }
 
     def __init__(self, request_id: str = None):
@@ -1444,9 +1504,17 @@ class UnknownOperationError:
     }
     _formats_map = {}
     _validations_map = {
-        "request_id": {"required": True, "minLength": 1, "pattern": "^[\w ,.\-_]*$",},
-        "status": {"required": True,},
-        "error_message": {"required": False,},
+        "request_id": {
+            "required": True,
+            "minLength": 1,
+            "pattern": "^[\w ,.\-_]*$",
+        },
+        "status": {
+            "required": True,
+        },
+        "error_message": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -1558,26 +1626,24 @@ class UnknownOperationError:
         )
 
 
-class StrategyOnFull(enum.Enum):
+class Persistence(enum.Enum):
     """
-    StrategyOnFull is used in the MessageStreamDefinition when creating a stream.
-    It defines the behavior when the stream has reached the maximum size.
-    RejectNewData: any append message request after the stream is full will be rejected with an exception.
-    OverwriteOldestData: the oldest stream segments will be deleted until there is room for the new message.
+    Stream persistence. If set to File, the file system will be used to persist messages long-term and is resilient to restarts.
+    Memory should be used when performance matters more than durability as it only stores the stream in memory and never writes to the disk.
     """
 
-    RejectNewData = 0
-    OverwriteOldestData = 1
+    File = 0
+    Memory = 1
 
     @staticmethod
     def from_dict(d):
-        return StrategyOnFull(d)
+        return Persistence(d)
 
     def as_dict(self):
         return self.value
 
     def __repr__(self):
-        return "<Enum StrategyOnFull. {}: {}>".format(
+        return "<Enum Persistence. {}: {}>".format(
             limitedRepr(self.name), limitedRepr(self.value)
         )
 
@@ -1598,7 +1664,9 @@ class StatusConfig:
     }
     _formats_map = {}
     _validations_map = {
-        "status_level": {"required": False,},
+        "status_level": {
+            "required": False,
+        },
         "status_stream_name": {
             "required": False,
             "minLength": 1,
@@ -1728,9 +1796,17 @@ class S3ExportTaskExecutorConfig:
             "required": False,
             "minimum": 5242880,
         },
-        "priority": {"required": False, "maximum": 10, "minimum": 1,},
-        "disabled": {"required": False,},
-        "status_config": {"required": False,},
+        "priority": {
+            "required": False,
+            "maximum": 10,
+            "minimum": 1,
+        },
+        "disabled": {
+            "required": False,
+        },
+        "status_config": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -1931,6 +2007,398 @@ class S3ExportTaskExecutorConfig:
         )
 
 
+class ExportFormat(enum.Enum):
+    """
+    ExportFormat is used to define how messages are batched and formatted in the export payload.
+    RAW_NOT_BATCHED: Each message in a batch will be sent as an individual HTTP POST with the payload as the body (even if batchSize is set).
+    JSON_BATCHED: Each batch of messages will be sent as a JSON list of Message objects as the body.
+    """
+
+    RAW_NOT_BATCHED = 0
+    JSON_BATCHED = 1
+
+    @staticmethod
+    def from_dict(d):
+        return ExportFormat(d)
+
+    def as_dict(self):
+        return self.value
+
+    def __repr__(self):
+        return "<Enum ExportFormat. {}: {}>".format(
+            limitedRepr(self.name), limitedRepr(self.value)
+        )
+
+
+class HTTPConfig:
+    """
+    This export destination is not supported! The interface may change at any time without notice and should not be relied on for any production use.
+    There are no guarantees around its correctness.
+    This configures an HTTP endpoint which sends a POST request to the provided URI. Each request contains a single message in the body of the request.
+    """
+
+    __slots__ = [
+        "__identifier",
+        "__uri",
+        "__batch_size",
+        "__batch_interval_millis",
+        "__priority",
+        "__start_sequence_number",
+        "__disabled",
+        "__export_format",
+    ]
+
+    _types_map = {
+        "identifier": {"type": str, "subtype": None},
+        "uri": {"type": str, "subtype": None},
+        "batch_size": {"type": int, "subtype": None},
+        "batch_interval_millis": {"type": int, "subtype": None},
+        "priority": {"type": int, "subtype": None},
+        "start_sequence_number": {"type": int, "subtype": None},
+        "disabled": {"type": bool, "subtype": None},
+        "export_format": {"type": ExportFormat, "subtype": None},
+    }
+    _formats_map = {}
+    _validations_map = {
+        "identifier": {
+            "required": True,
+            "minLength": 1,
+            "maxLength": 255,
+            "pattern": "^[\w ,.\-_]*$",
+        },
+        "uri": {
+            "required": True,
+            "minLength": 1,
+        },
+        "batch_size": {
+            "required": False,
+            "maximum": 500,
+            "minimum": 1,
+        },
+        "batch_interval_millis": {
+            "required": False,
+            "maximum": 9223372036854,
+            "minimum": 60000,
+        },
+        "priority": {
+            "required": False,
+            "maximum": 10,
+            "minimum": 1,
+        },
+        "start_sequence_number": {
+            "required": False,
+            "maximum": 9223372036854775807,
+            "minimum": 0,
+        },
+        "disabled": {
+            "required": False,
+        },
+        "export_format": {
+            "required": False,
+        },
+    }
+
+    def __init__(
+        self,
+        identifier: str = None,
+        uri: str = None,
+        batch_size: int = None,
+        batch_interval_millis: int = None,
+        priority: int = None,
+        start_sequence_number: int = None,
+        disabled: bool = None,
+        export_format: ExportFormat = None,
+    ):
+        """
+        :param identifier: A unique identifier to identify this individual upload stream.
+            Must be an alphanumeric string including spaces, commas, periods, hyphens, and underscores with length between 1 and 255.
+        :param uri: URL for HTTP endpoint which should receive the POST requests for export.
+        :param batch_size: The maximum size of a batch to send to the destination. Messages will be queued until the batch size is reached, after which they will then be uploaded. If unspecified the default will be 500.
+            If both batchSize and batchIntervalMillis are specified, then messages will be eligible for upload when either condition is met.
+            The minimum batch size is 1 and the maximum is 500.
+        :param batch_interval_millis: The time in milliseconds between the earliest un-uploaded message and the current time. If this time is exceeded, messages will be uploaded in the next batch. If unspecified messages will be eligible for upload immediately.
+            If both batchSize and batchIntervalMillis are specified, then messages will be eligible for upload when either condition is met.
+            The minimum value is 60000 milliseconds and the maximum is 9223372036854 milliseconds.
+        :param priority: Priority for this upload stream. Lower values are higher priority. If not specified it will have the lowest priority.
+        :param start_sequence_number: The sequence number of the message to use as the starting message in the export. Default is 0. The sequence number provided should be less than the newest sequence number in the stream, i.e., sequence number of the last messaged appended. To find the newest sequence number, describe the stream and then check the storage status of the returned MessageStreamInfo object.
+        :param disabled: Enable or disable this export. Default is false.
+        :param export_format: Defines how messages are batched and formatted in the export payload.
+        """
+        pass
+        self.__identifier = identifier
+        self.__uri = uri
+        self.__batch_size = batch_size
+        self.__batch_interval_millis = batch_interval_millis
+        self.__priority = priority
+        self.__start_sequence_number = start_sequence_number
+        self.__disabled = disabled
+        self.__export_format = export_format
+
+    def _get_identifier(self):
+        return self.__identifier
+
+    def _set_identifier(self, value):
+        if not isinstance(value, str):
+            raise TypeError("identifier must be str")
+
+        self.__identifier = value
+
+    identifier = property(_get_identifier, _set_identifier)
+    """
+    A unique identifier to identify this individual upload stream.
+    Must be an alphanumeric string including spaces, commas, periods, hyphens, and underscores with length between 1 and 255.
+    """
+
+    def _get_uri(self):
+        return self.__uri
+
+    def _set_uri(self, value):
+        if not isinstance(value, str):
+            raise TypeError("uri must be str")
+
+        self.__uri = value
+
+    uri = property(_get_uri, _set_uri)
+    """
+    URL for HTTP endpoint which should receive the POST requests for export.
+    """
+
+    def _get_batch_size(self):
+        return self.__batch_size
+
+    def _set_batch_size(self, value):
+        if value is not None and not isinstance(value, int):
+            raise TypeError("batch_size must be int")
+
+        self.__batch_size = value
+
+    batch_size = property(_get_batch_size, _set_batch_size)
+    """
+    The maximum size of a batch to send to the destination. Messages will be queued until the batch size is reached, after which they will then be uploaded. If unspecified the default will be 500.
+    If both batchSize and batchIntervalMillis are specified, then messages will be eligible for upload when either condition is met.
+    The minimum batch size is 1 and the maximum is 500.
+    """
+
+    def _get_batch_interval_millis(self):
+        return self.__batch_interval_millis
+
+    def _set_batch_interval_millis(self, value):
+        if value is not None and not isinstance(value, int):
+            raise TypeError("batch_interval_millis must be int")
+
+        self.__batch_interval_millis = value
+
+    batch_interval_millis = property(
+        _get_batch_interval_millis, _set_batch_interval_millis
+    )
+    """
+    The time in milliseconds between the earliest un-uploaded message and the current time. If this time is exceeded, messages will be uploaded in the next batch. If unspecified messages will be eligible for upload immediately.
+    If both batchSize and batchIntervalMillis are specified, then messages will be eligible for upload when either condition is met.
+    The minimum value is 60000 milliseconds and the maximum is 9223372036854 milliseconds.
+    """
+
+    def _get_priority(self):
+        return self.__priority
+
+    def _set_priority(self, value):
+        if value is not None and not isinstance(value, int):
+            raise TypeError("priority must be int")
+
+        self.__priority = value
+
+    priority = property(_get_priority, _set_priority)
+    """
+    Priority for this upload stream. Lower values are higher priority. If not specified it will have the lowest priority.
+    """
+
+    def _get_start_sequence_number(self):
+        return self.__start_sequence_number
+
+    def _set_start_sequence_number(self, value):
+        if value is not None and not isinstance(value, int):
+            raise TypeError("start_sequence_number must be int")
+
+        self.__start_sequence_number = value
+
+    start_sequence_number = property(
+        _get_start_sequence_number, _set_start_sequence_number
+    )
+    """
+    The sequence number of the message to use as the starting message in the export. Default is 0. The sequence number provided should be less than the newest sequence number in the stream, i.e., sequence number of the last messaged appended. To find the newest sequence number, describe the stream and then check the storage status of the returned MessageStreamInfo object.
+    """
+
+    def _get_disabled(self):
+        return self.__disabled
+
+    def _set_disabled(self, value):
+        if value is not None and not isinstance(value, bool):
+            raise TypeError("disabled must be bool")
+
+        self.__disabled = value
+
+    disabled = property(_get_disabled, _set_disabled)
+    """
+    Enable or disable this export. Default is false.
+    """
+
+    def _get_export_format(self):
+        return self.__export_format
+
+    def _set_export_format(self, value):
+        if value is not None and not isinstance(value, ExportFormat):
+            raise TypeError("export_format must be ExportFormat")
+
+        self.__export_format = value
+
+    export_format = property(_get_export_format, _set_export_format)
+    """
+    Defines how messages are batched and formatted in the export payload.
+    """
+
+    @staticmethod
+    def from_dict(d):
+        v = {}
+        if "identifier" in d:
+            v["identifier"] = (
+                str.from_dict(d["identifier"])
+                if hasattr(str, "from_dict")
+                else d["identifier"]
+            )
+        if "uri" in d:
+            v["uri"] = (
+                str.from_dict(d["uri"]) if hasattr(str, "from_dict") else d["uri"]
+            )
+        if "batchSize" in d:
+            v["batch_size"] = (
+                int.from_dict(d["batchSize"])
+                if hasattr(int, "from_dict")
+                else d["batchSize"]
+            )
+        if "batchIntervalMillis" in d:
+            v["batch_interval_millis"] = (
+                int.from_dict(d["batchIntervalMillis"])
+                if hasattr(int, "from_dict")
+                else d["batchIntervalMillis"]
+            )
+        if "priority" in d:
+            v["priority"] = (
+                int.from_dict(d["priority"])
+                if hasattr(int, "from_dict")
+                else d["priority"]
+            )
+        if "startSequenceNumber" in d:
+            v["start_sequence_number"] = (
+                int.from_dict(d["startSequenceNumber"])
+                if hasattr(int, "from_dict")
+                else d["startSequenceNumber"]
+            )
+        if "disabled" in d:
+            v["disabled"] = (
+                bool.from_dict(d["disabled"])
+                if hasattr(bool, "from_dict")
+                else d["disabled"]
+            )
+        if "exportFormat" in d:
+            v["export_format"] = (
+                ExportFormat.from_dict(d["exportFormat"])
+                if hasattr(ExportFormat, "from_dict")
+                else d["exportFormat"]
+            )
+        return HTTPConfig(**v)
+
+    def as_dict(self):
+        d = {}
+        if self.__identifier is not None:
+            d["identifier"] = (
+                self.__identifier.as_dict()
+                if hasattr(self.__identifier, "as_dict")
+                else self.__identifier
+            )
+        if self.__uri is not None:
+            d["uri"] = (
+                self.__uri.as_dict() if hasattr(self.__uri, "as_dict") else self.__uri
+            )
+        if self.__batch_size is not None:
+            d["batchSize"] = (
+                self.__batch_size.as_dict()
+                if hasattr(self.__batch_size, "as_dict")
+                else self.__batch_size
+            )
+        if self.__batch_interval_millis is not None:
+            d["batchIntervalMillis"] = (
+                self.__batch_interval_millis.as_dict()
+                if hasattr(self.__batch_interval_millis, "as_dict")
+                else self.__batch_interval_millis
+            )
+        if self.__priority is not None:
+            d["priority"] = (
+                self.__priority.as_dict()
+                if hasattr(self.__priority, "as_dict")
+                else self.__priority
+            )
+        if self.__start_sequence_number is not None:
+            d["startSequenceNumber"] = (
+                self.__start_sequence_number.as_dict()
+                if hasattr(self.__start_sequence_number, "as_dict")
+                else self.__start_sequence_number
+            )
+        if self.__disabled is not None:
+            d["disabled"] = (
+                self.__disabled.as_dict()
+                if hasattr(self.__disabled, "as_dict")
+                else self.__disabled
+            )
+        if self.__export_format is not None:
+            d["exportFormat"] = (
+                self.__export_format.as_dict()
+                if hasattr(self.__export_format, "as_dict")
+                else self.__export_format
+            )
+        return d
+
+    def __repr__(self):
+        return "<Class HTTPConfig. identifier: {}, uri: {}, batch_size: {}, batch_interval_millis: {}, priority: {}, start_sequence_number: {}, disabled: {}, export_format: {}>".format(
+            limitedRepr(
+                self.__identifier[:20]
+                if isinstance(self.__identifier, bytes)
+                else self.__identifier
+            ),
+            limitedRepr(
+                self.__uri[:20] if isinstance(self.__uri, bytes) else self.__uri
+            ),
+            limitedRepr(
+                self.__batch_size[:20]
+                if isinstance(self.__batch_size, bytes)
+                else self.__batch_size
+            ),
+            limitedRepr(
+                self.__batch_interval_millis[:20]
+                if isinstance(self.__batch_interval_millis, bytes)
+                else self.__batch_interval_millis
+            ),
+            limitedRepr(
+                self.__priority[:20]
+                if isinstance(self.__priority, bytes)
+                else self.__priority
+            ),
+            limitedRepr(
+                self.__start_sequence_number[:20]
+                if isinstance(self.__start_sequence_number, bytes)
+                else self.__start_sequence_number
+            ),
+            limitedRepr(
+                self.__disabled[:20]
+                if isinstance(self.__disabled, bytes)
+                else self.__disabled
+            ),
+            limitedRepr(
+                self.__export_format[:20]
+                if isinstance(self.__export_format, bytes)
+                else self.__export_format
+            ),
+        )
+
+
 class IoTAnalyticsConfig:
     """
     Configuration object for IoT Analytics export destination.
@@ -1965,21 +2433,37 @@ class IoTAnalyticsConfig:
             "maxLength": 255,
             "pattern": "^[\w ,.\-_]*$",
         },
-        "iot_channel": {"required": True, "minLength": 1,},
-        "iot_msg_id_prefix": {"required": False, "maxLength": 32,},
-        "batch_size": {"required": False, "maximum": 100, "minimum": 1,},
+        "iot_channel": {
+            "required": True,
+            "minLength": 1,
+        },
+        "iot_msg_id_prefix": {
+            "required": False,
+            "maxLength": 32,
+        },
+        "batch_size": {
+            "required": False,
+            "maximum": 100,
+            "minimum": 1,
+        },
         "batch_interval_millis": {
             "required": False,
             "maximum": 9223372036854,
             "minimum": 60000,
         },
-        "priority": {"required": False, "maximum": 10, "minimum": 1,},
+        "priority": {
+            "required": False,
+            "maximum": 10,
+            "minimum": 1,
+        },
         "start_sequence_number": {
             "required": False,
             "maximum": 9223372036854775807,
             "minimum": 0,
         },
-        "disabled": {"required": False,},
+        "disabled": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -2321,19 +2805,29 @@ class IoTSiteWiseConfig:
             "maxLength": 255,
             "pattern": "^[\w ,.\-_]*$",
         },
-        "batch_size": {"required": False, "maximum": 10, "minimum": 1,},
+        "batch_size": {
+            "required": False,
+            "maximum": 10,
+            "minimum": 1,
+        },
         "batch_interval_millis": {
             "required": False,
             "maximum": 9223372036854,
             "minimum": 60000,
         },
-        "priority": {"required": False, "maximum": 10, "minimum": 1,},
+        "priority": {
+            "required": False,
+            "maximum": 10,
+            "minimum": 1,
+        },
         "start_sequence_number": {
             "required": False,
             "maximum": 9223372036854775807,
             "minimum": 0,
         },
-        "disabled": {"required": False,},
+        "disabled": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -2575,383 +3069,6 @@ class IoTSiteWiseConfig:
         )
 
 
-class ExportFormat(enum.Enum):
-    """
-    ExportFormat is used to define how messages are batched and formatted in the export payload.
-    RAW_NOT_BATCHED: Each message in a batch will be sent as an individual HTTP POST with the payload as the body (even if batchSize is set).
-    JSON_BATCHED: Each batch of messages will be sent as a JSON list of Message objects as the body.
-    """
-
-    RAW_NOT_BATCHED = 0
-    JSON_BATCHED = 1
-
-    @staticmethod
-    def from_dict(d):
-        return ExportFormat(d)
-
-    def as_dict(self):
-        return self.value
-
-    def __repr__(self):
-        return "<Enum ExportFormat. {}: {}>".format(
-            limitedRepr(self.name), limitedRepr(self.value)
-        )
-
-
-class HTTPConfig:
-    """
-    This export destination is not supported! The interface may change at any time without notice and should not be relied on for any production use.
-    There are no guarantees around its correctness.
-    This configures an HTTP endpoint which sends a POST request to the provided URI. Each request contains a single message in the body of the request.
-    """
-
-    __slots__ = [
-        "__identifier",
-        "__uri",
-        "__batch_size",
-        "__batch_interval_millis",
-        "__priority",
-        "__start_sequence_number",
-        "__disabled",
-        "__export_format",
-    ]
-
-    _types_map = {
-        "identifier": {"type": str, "subtype": None},
-        "uri": {"type": str, "subtype": None},
-        "batch_size": {"type": int, "subtype": None},
-        "batch_interval_millis": {"type": int, "subtype": None},
-        "priority": {"type": int, "subtype": None},
-        "start_sequence_number": {"type": int, "subtype": None},
-        "disabled": {"type": bool, "subtype": None},
-        "export_format": {"type": ExportFormat, "subtype": None},
-    }
-    _formats_map = {}
-    _validations_map = {
-        "identifier": {
-            "required": True,
-            "minLength": 1,
-            "maxLength": 255,
-            "pattern": "^[\w ,.\-_]*$",
-        },
-        "uri": {"required": True, "minLength": 1,},
-        "batch_size": {"required": False, "maximum": 500, "minimum": 1,},
-        "batch_interval_millis": {
-            "required": False,
-            "maximum": 9223372036854,
-            "minimum": 60000,
-        },
-        "priority": {"required": False, "maximum": 10, "minimum": 1,},
-        "start_sequence_number": {
-            "required": False,
-            "maximum": 9223372036854775807,
-            "minimum": 0,
-        },
-        "disabled": {"required": False,},
-        "export_format": {"required": False,},
-    }
-
-    def __init__(
-        self,
-        identifier: str = None,
-        uri: str = None,
-        batch_size: int = None,
-        batch_interval_millis: int = None,
-        priority: int = None,
-        start_sequence_number: int = None,
-        disabled: bool = None,
-        export_format: ExportFormat = None,
-    ):
-        """
-        :param identifier: A unique identifier to identify this individual upload stream.
-            Must be an alphanumeric string including spaces, commas, periods, hyphens, and underscores with length between 1 and 255.
-        :param uri: URL for HTTP endpoint which should receive the POST requests for export.
-        :param batch_size: The maximum size of a batch to send to the destination. Messages will be queued until the batch size is reached, after which they will then be uploaded. If unspecified the default will be 500.
-            If both batchSize and batchIntervalMillis are specified, then messages will be eligible for upload when either condition is met.
-            The minimum batch size is 1 and the maximum is 500.
-        :param batch_interval_millis: The time in milliseconds between the earliest un-uploaded message and the current time. If this time is exceeded, messages will be uploaded in the next batch. If unspecified messages will be eligible for upload immediately.
-            If both batchSize and batchIntervalMillis are specified, then messages will be eligible for upload when either condition is met.
-            The minimum value is 60000 milliseconds and the maximum is 9223372036854 milliseconds.
-        :param priority: Priority for this upload stream. Lower values are higher priority. If not specified it will have the lowest priority.
-        :param start_sequence_number: The sequence number of the message to use as the starting message in the export. Default is 0. The sequence number provided should be less than the newest sequence number in the stream, i.e., sequence number of the last messaged appended. To find the newest sequence number, describe the stream and then check the storage status of the returned MessageStreamInfo object.
-        :param disabled: Enable or disable this export. Default is false.
-        :param export_format: Defines how messages are batched and formatted in the export payload.
-        """
-        pass
-        self.__identifier = identifier
-        self.__uri = uri
-        self.__batch_size = batch_size
-        self.__batch_interval_millis = batch_interval_millis
-        self.__priority = priority
-        self.__start_sequence_number = start_sequence_number
-        self.__disabled = disabled
-        self.__export_format = export_format
-
-    def _get_identifier(self):
-        return self.__identifier
-
-    def _set_identifier(self, value):
-        if not isinstance(value, str):
-            raise TypeError("identifier must be str")
-
-        self.__identifier = value
-
-    identifier = property(_get_identifier, _set_identifier)
-    """
-    A unique identifier to identify this individual upload stream.
-    Must be an alphanumeric string including spaces, commas, periods, hyphens, and underscores with length between 1 and 255.
-    """
-
-    def _get_uri(self):
-        return self.__uri
-
-    def _set_uri(self, value):
-        if not isinstance(value, str):
-            raise TypeError("uri must be str")
-
-        self.__uri = value
-
-    uri = property(_get_uri, _set_uri)
-    """
-    URL for HTTP endpoint which should receive the POST requests for export.
-    """
-
-    def _get_batch_size(self):
-        return self.__batch_size
-
-    def _set_batch_size(self, value):
-        if value is not None and not isinstance(value, int):
-            raise TypeError("batch_size must be int")
-
-        self.__batch_size = value
-
-    batch_size = property(_get_batch_size, _set_batch_size)
-    """
-    The maximum size of a batch to send to the destination. Messages will be queued until the batch size is reached, after which they will then be uploaded. If unspecified the default will be 500.
-    If both batchSize and batchIntervalMillis are specified, then messages will be eligible for upload when either condition is met.
-    The minimum batch size is 1 and the maximum is 500.
-    """
-
-    def _get_batch_interval_millis(self):
-        return self.__batch_interval_millis
-
-    def _set_batch_interval_millis(self, value):
-        if value is not None and not isinstance(value, int):
-            raise TypeError("batch_interval_millis must be int")
-
-        self.__batch_interval_millis = value
-
-    batch_interval_millis = property(
-        _get_batch_interval_millis, _set_batch_interval_millis
-    )
-    """
-    The time in milliseconds between the earliest un-uploaded message and the current time. If this time is exceeded, messages will be uploaded in the next batch. If unspecified messages will be eligible for upload immediately.
-    If both batchSize and batchIntervalMillis are specified, then messages will be eligible for upload when either condition is met.
-    The minimum value is 60000 milliseconds and the maximum is 9223372036854 milliseconds.
-    """
-
-    def _get_priority(self):
-        return self.__priority
-
-    def _set_priority(self, value):
-        if value is not None and not isinstance(value, int):
-            raise TypeError("priority must be int")
-
-        self.__priority = value
-
-    priority = property(_get_priority, _set_priority)
-    """
-    Priority for this upload stream. Lower values are higher priority. If not specified it will have the lowest priority.
-    """
-
-    def _get_start_sequence_number(self):
-        return self.__start_sequence_number
-
-    def _set_start_sequence_number(self, value):
-        if value is not None and not isinstance(value, int):
-            raise TypeError("start_sequence_number must be int")
-
-        self.__start_sequence_number = value
-
-    start_sequence_number = property(
-        _get_start_sequence_number, _set_start_sequence_number
-    )
-    """
-    The sequence number of the message to use as the starting message in the export. Default is 0. The sequence number provided should be less than the newest sequence number in the stream, i.e., sequence number of the last messaged appended. To find the newest sequence number, describe the stream and then check the storage status of the returned MessageStreamInfo object.
-    """
-
-    def _get_disabled(self):
-        return self.__disabled
-
-    def _set_disabled(self, value):
-        if value is not None and not isinstance(value, bool):
-            raise TypeError("disabled must be bool")
-
-        self.__disabled = value
-
-    disabled = property(_get_disabled, _set_disabled)
-    """
-    Enable or disable this export. Default is false.
-    """
-
-    def _get_export_format(self):
-        return self.__export_format
-
-    def _set_export_format(self, value):
-        if value is not None and not isinstance(value, ExportFormat):
-            raise TypeError("export_format must be ExportFormat")
-
-        self.__export_format = value
-
-    export_format = property(_get_export_format, _set_export_format)
-    """
-    Defines how messages are batched and formatted in the export payload.
-    """
-
-    @staticmethod
-    def from_dict(d):
-        v = {}
-        if "identifier" in d:
-            v["identifier"] = (
-                str.from_dict(d["identifier"])
-                if hasattr(str, "from_dict")
-                else d["identifier"]
-            )
-        if "uri" in d:
-            v["uri"] = (
-                str.from_dict(d["uri"]) if hasattr(str, "from_dict") else d["uri"]
-            )
-        if "batchSize" in d:
-            v["batch_size"] = (
-                int.from_dict(d["batchSize"])
-                if hasattr(int, "from_dict")
-                else d["batchSize"]
-            )
-        if "batchIntervalMillis" in d:
-            v["batch_interval_millis"] = (
-                int.from_dict(d["batchIntervalMillis"])
-                if hasattr(int, "from_dict")
-                else d["batchIntervalMillis"]
-            )
-        if "priority" in d:
-            v["priority"] = (
-                int.from_dict(d["priority"])
-                if hasattr(int, "from_dict")
-                else d["priority"]
-            )
-        if "startSequenceNumber" in d:
-            v["start_sequence_number"] = (
-                int.from_dict(d["startSequenceNumber"])
-                if hasattr(int, "from_dict")
-                else d["startSequenceNumber"]
-            )
-        if "disabled" in d:
-            v["disabled"] = (
-                bool.from_dict(d["disabled"])
-                if hasattr(bool, "from_dict")
-                else d["disabled"]
-            )
-        if "exportFormat" in d:
-            v["export_format"] = (
-                ExportFormat.from_dict(d["exportFormat"])
-                if hasattr(ExportFormat, "from_dict")
-                else d["exportFormat"]
-            )
-        return HTTPConfig(**v)
-
-    def as_dict(self):
-        d = {}
-        if self.__identifier is not None:
-            d["identifier"] = (
-                self.__identifier.as_dict()
-                if hasattr(self.__identifier, "as_dict")
-                else self.__identifier
-            )
-        if self.__uri is not None:
-            d["uri"] = (
-                self.__uri.as_dict() if hasattr(self.__uri, "as_dict") else self.__uri
-            )
-        if self.__batch_size is not None:
-            d["batchSize"] = (
-                self.__batch_size.as_dict()
-                if hasattr(self.__batch_size, "as_dict")
-                else self.__batch_size
-            )
-        if self.__batch_interval_millis is not None:
-            d["batchIntervalMillis"] = (
-                self.__batch_interval_millis.as_dict()
-                if hasattr(self.__batch_interval_millis, "as_dict")
-                else self.__batch_interval_millis
-            )
-        if self.__priority is not None:
-            d["priority"] = (
-                self.__priority.as_dict()
-                if hasattr(self.__priority, "as_dict")
-                else self.__priority
-            )
-        if self.__start_sequence_number is not None:
-            d["startSequenceNumber"] = (
-                self.__start_sequence_number.as_dict()
-                if hasattr(self.__start_sequence_number, "as_dict")
-                else self.__start_sequence_number
-            )
-        if self.__disabled is not None:
-            d["disabled"] = (
-                self.__disabled.as_dict()
-                if hasattr(self.__disabled, "as_dict")
-                else self.__disabled
-            )
-        if self.__export_format is not None:
-            d["exportFormat"] = (
-                self.__export_format.as_dict()
-                if hasattr(self.__export_format, "as_dict")
-                else self.__export_format
-            )
-        return d
-
-    def __repr__(self):
-        return "<Class HTTPConfig. identifier: {}, uri: {}, batch_size: {}, batch_interval_millis: {}, priority: {}, start_sequence_number: {}, disabled: {}, export_format: {}>".format(
-            limitedRepr(
-                self.__identifier[:20]
-                if isinstance(self.__identifier, bytes)
-                else self.__identifier
-            ),
-            limitedRepr(
-                self.__uri[:20] if isinstance(self.__uri, bytes) else self.__uri
-            ),
-            limitedRepr(
-                self.__batch_size[:20]
-                if isinstance(self.__batch_size, bytes)
-                else self.__batch_size
-            ),
-            limitedRepr(
-                self.__batch_interval_millis[:20]
-                if isinstance(self.__batch_interval_millis, bytes)
-                else self.__batch_interval_millis
-            ),
-            limitedRepr(
-                self.__priority[:20]
-                if isinstance(self.__priority, bytes)
-                else self.__priority
-            ),
-            limitedRepr(
-                self.__start_sequence_number[:20]
-                if isinstance(self.__start_sequence_number, bytes)
-                else self.__start_sequence_number
-            ),
-            limitedRepr(
-                self.__disabled[:20]
-                if isinstance(self.__disabled, bytes)
-                else self.__disabled
-            ),
-            limitedRepr(
-                self.__export_format[:20]
-                if isinstance(self.__export_format, bytes)
-                else self.__export_format
-            ),
-        )
-
-
 class KinesisConfig:
     """
     Configuration object for Kinesis data streams export destination.
@@ -2984,20 +3101,33 @@ class KinesisConfig:
             "maxLength": 255,
             "pattern": "^[\w ,.\-_]*$",
         },
-        "kinesis_stream_name": {"required": True, "minLength": 1,},
-        "batch_size": {"required": False, "maximum": 500, "minimum": 1,},
+        "kinesis_stream_name": {
+            "required": True,
+            "minLength": 1,
+        },
+        "batch_size": {
+            "required": False,
+            "maximum": 500,
+            "minimum": 1,
+        },
         "batch_interval_millis": {
             "required": False,
             "maximum": 9223372036854,
             "minimum": 60000,
         },
-        "priority": {"required": False, "maximum": 10, "minimum": 1,},
+        "priority": {
+            "required": False,
+            "maximum": 10,
+            "minimum": 1,
+        },
         "start_sequence_number": {
             "required": False,
             "maximum": 9223372036854775807,
             "minimum": 0,
         },
-        "disabled": {"required": False,},
+        "disabled": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -3295,11 +3425,21 @@ class ExportDefinition:
     }
     _formats_map = {}
     _validations_map = {
-        "http": {"required": False,},
-        "iot_analytics": {"required": False,},
-        "kinesis": {"required": False,},
-        "iot_sitewise": {"required": False,},
-        "s3_task_executor": {"required": False,},
+        "http": {
+            "required": False,
+        },
+        "iot_analytics": {
+            "required": False,
+        },
+        "kinesis": {
+            "required": False,
+        },
+        "iot_sitewise": {
+            "required": False,
+        },
+        "s3_task_executor": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -3502,24 +3642,26 @@ class ExportDefinition:
         )
 
 
-class Persistence(enum.Enum):
+class StrategyOnFull(enum.Enum):
     """
-    Stream persistence. If set to File, the file system will be used to persist messages long-term and is resilient to restarts.
-    Memory should be used when performance matters more than durability as it only stores the stream in memory and never writes to the disk.
+    StrategyOnFull is used in the MessageStreamDefinition when creating a stream.
+    It defines the behavior when the stream has reached the maximum size.
+    RejectNewData: any append message request after the stream is full will be rejected with an exception.
+    OverwriteOldestData: the oldest stream segments will be deleted until there is room for the new message.
     """
 
-    File = 0
-    Memory = 1
+    RejectNewData = 0
+    OverwriteOldestData = 1
 
     @staticmethod
     def from_dict(d):
-        return Persistence(d)
+        return StrategyOnFull(d)
 
     def as_dict(self):
         return self.value
 
     def __repr__(self):
-        return "<Enum Persistence. {}: {}>".format(
+        return "<Enum StrategyOnFull. {}: {}>".format(
             limitedRepr(self.name), limitedRepr(self.value)
         )
 
@@ -3573,10 +3715,18 @@ class MessageStreamDefinition:
             "maximum": 9223372036854,
             "minimum": 60000,
         },
-        "strategy_on_full": {"required": True,},
-        "persistence": {"required": False,},
-        "flush_on_write": {"required": False,},
-        "export_definition": {"required": False,},
+        "strategy_on_full": {
+            "required": True,
+        },
+        "persistence": {
+            "required": False,
+        },
+        "flush_on_write": {
+            "required": False,
+        },
+        "export_definition": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -3898,8 +4048,14 @@ class CreateMessageStreamRequest:
     }
     _formats_map = {}
     _validations_map = {
-        "request_id": {"required": True, "minLength": 1, "pattern": "^[\w ,.\-_]*$",},
-        "definition": {"required": True,},
+        "request_id": {
+            "required": True,
+            "minLength": 1,
+            "pattern": "^[\w ,.\-_]*$",
+        },
+        "definition": {
+            "required": True,
+        },
     }
 
     def __init__(
@@ -3965,17 +4121,19 @@ class CreateMessageStreamRequest:
         return d
 
     def __repr__(self):
-        return "<Class CreateMessageStreamRequest. request_id: {}, definition: {}>".format(
-            limitedRepr(
-                self.__request_id[:20]
-                if isinstance(self.__request_id, bytes)
-                else self.__request_id
-            ),
-            limitedRepr(
-                self.__definition[:20]
-                if isinstance(self.__definition, bytes)
-                else self.__definition
-            ),
+        return (
+            "<Class CreateMessageStreamRequest. request_id: {}, definition: {}>".format(
+                limitedRepr(
+                    self.__request_id[:20]
+                    if isinstance(self.__request_id, bytes)
+                    else self.__request_id
+                ),
+                limitedRepr(
+                    self.__definition[:20]
+                    if isinstance(self.__definition, bytes)
+                    else self.__definition
+                ),
+            )
         )
 
 
@@ -3997,9 +4155,17 @@ class CreateMessageStreamResponse:
     }
     _formats_map = {}
     _validations_map = {
-        "request_id": {"required": True, "minLength": 1, "pattern": "^[\w ,.\-_]*$",},
-        "status": {"required": True,},
-        "error_message": {"required": False,},
+        "request_id": {
+            "required": True,
+            "minLength": 1,
+            "pattern": "^[\w ,.\-_]*$",
+        },
+        "status": {
+            "required": True,
+        },
+        "error_message": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -4127,8 +4293,14 @@ class UpdateMessageStreamRequest:
     }
     _formats_map = {}
     _validations_map = {
-        "request_id": {"required": True, "minLength": 1, "pattern": "^[\w ,.\-_]*$",},
-        "definition": {"required": True,},
+        "request_id": {
+            "required": True,
+            "minLength": 1,
+            "pattern": "^[\w ,.\-_]*$",
+        },
+        "definition": {
+            "required": True,
+        },
     }
 
     def __init__(
@@ -4194,17 +4366,19 @@ class UpdateMessageStreamRequest:
         return d
 
     def __repr__(self):
-        return "<Class UpdateMessageStreamRequest. request_id: {}, definition: {}>".format(
-            limitedRepr(
-                self.__request_id[:20]
-                if isinstance(self.__request_id, bytes)
-                else self.__request_id
-            ),
-            limitedRepr(
-                self.__definition[:20]
-                if isinstance(self.__definition, bytes)
-                else self.__definition
-            ),
+        return (
+            "<Class UpdateMessageStreamRequest. request_id: {}, definition: {}>".format(
+                limitedRepr(
+                    self.__request_id[:20]
+                    if isinstance(self.__request_id, bytes)
+                    else self.__request_id
+                ),
+                limitedRepr(
+                    self.__definition[:20]
+                    if isinstance(self.__definition, bytes)
+                    else self.__definition
+                ),
+            )
         )
 
 
@@ -4226,9 +4400,17 @@ class UpdateMessageStreamResponse:
     }
     _formats_map = {}
     _validations_map = {
-        "request_id": {"required": True, "minLength": 1, "pattern": "^[\w ,.\-_]*$",},
-        "status": {"required": True,},
-        "error_message": {"required": False,},
+        "request_id": {
+            "required": True,
+            "minLength": 1,
+            "pattern": "^[\w ,.\-_]*$",
+        },
+        "status": {
+            "required": True,
+        },
+        "error_message": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -4356,7 +4538,11 @@ class DeleteMessageStreamRequest:
     }
     _formats_map = {}
     _validations_map = {
-        "request_id": {"required": True, "minLength": 1, "pattern": "^[\w ,.\-_]*$",},
+        "request_id": {
+            "required": True,
+            "minLength": 1,
+            "pattern": "^[\w ,.\-_]*$",
+        },
         "name": {
             "required": True,
             "minLength": 1,
@@ -4454,9 +4640,17 @@ class DeleteMessageStreamResponse:
     }
     _formats_map = {}
     _validations_map = {
-        "request_id": {"required": True, "minLength": 1, "pattern": "^[\w ,.\-_]*$",},
-        "status": {"required": True,},
-        "error_message": {"required": False,},
+        "request_id": {
+            "required": True,
+            "minLength": 1,
+            "pattern": "^[\w ,.\-_]*$",
+        },
+        "status": {
+            "required": True,
+        },
+        "error_message": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -4584,7 +4778,11 @@ class DescribeMessageStreamRequest:
     }
     _formats_map = {}
     _validations_map = {
-        "request_id": {"required": True, "minLength": 1, "pattern": "^[\w ,.\-_]*$",},
+        "request_id": {
+            "required": True,
+            "minLength": 1,
+            "pattern": "^[\w ,.\-_]*$",
+        },
         "name": {
             "required": True,
             "minLength": 1,
@@ -4671,8 +4869,8 @@ class MessageStreamInfo:
 
     class storageStatus:
         """
-            Stream status including oldest/newest sequence number and total bytes.
-            """
+        Stream status including oldest/newest sequence number and total bytes.
+        """
 
         __slots__ = [
             "__oldest_sequence_number",
@@ -4687,9 +4885,15 @@ class MessageStreamInfo:
         }
         _formats_map = {}
         _validations_map = {
-            "oldest_sequence_number": {"required": False,},
-            "newest_sequence_number": {"required": False,},
-            "total_bytes": {"required": False,},
+            "oldest_sequence_number": {
+                "required": False,
+            },
+            "newest_sequence_number": {
+                "required": False,
+            },
+            "total_bytes": {
+                "required": False,
+            },
         }
 
         def __init__(
@@ -4699,10 +4903,10 @@ class MessageStreamInfo:
             total_bytes: int = None,
         ):
             """
-                :param oldest_sequence_number: The sequence number of the first message which is still accessible in the stream.
-                :param newest_sequence_number: The sequence number of the last appended message.
-                :param total_bytes: The current total size of the stream in bytes.
-                """
+            :param oldest_sequence_number: The sequence number of the first message which is still accessible in the stream.
+            :param newest_sequence_number: The sequence number of the last appended message.
+            :param total_bytes: The current total size of the stream in bytes.
+            """
             pass
             self.__oldest_sequence_number = oldest_sequence_number
             self.__newest_sequence_number = newest_sequence_number
@@ -4820,8 +5024,8 @@ class MessageStreamInfo:
 
     class exportStatuses:
         """
-            Export status including the export identifier and the last exported sequence number for that export task.
-            """
+        Export status including the export identifier and the last exported sequence number for that export task.
+        """
 
         __slots__ = [
             "__export_config_identifier",
@@ -4842,12 +5046,24 @@ class MessageStreamInfo:
         }
         _formats_map = {}
         _validations_map = {
-            "export_config_identifier": {"required": False,},
-            "last_exported_sequence_number": {"required": True,},
-            "last_export_time": {"required": False,},
-            "error_message": {"required": False,},
-            "exported_bytes_from_stream": {"required": False,},
-            "exported_messages_count": {"required": False,},
+            "export_config_identifier": {
+                "required": False,
+            },
+            "last_exported_sequence_number": {
+                "required": True,
+            },
+            "last_export_time": {
+                "required": False,
+            },
+            "error_message": {
+                "required": False,
+            },
+            "exported_bytes_from_stream": {
+                "required": False,
+            },
+            "exported_messages_count": {
+                "required": False,
+            },
         }
 
         def __init__(
@@ -4860,13 +5076,13 @@ class MessageStreamInfo:
             exported_messages_count: int = None,
         ):
             """
-                :param export_config_identifier: The unique export identifier.
-                :param last_exported_sequence_number: The sequence number of the last message which was successfully exported.
-                :param last_export_time: The last time an export was attempted. Data is Unix epoch time in milliseconds.
-                :param error_message: Error message from the last export attempt if it failed.
-                :param exported_bytes_from_stream: Total bytes exported from the stream for this Export Config. It does not include the failed export attempts or messages which are skipped because of some non-retryable error.
-                :param exported_messages_count: Total messages exported/processed.
-                """
+            :param export_config_identifier: The unique export identifier.
+            :param last_exported_sequence_number: The sequence number of the last message which was successfully exported.
+            :param last_export_time: The last time an export was attempted. Data is Unix epoch time in milliseconds.
+            :param error_message: Error message from the last export attempt if it failed.
+            :param exported_bytes_from_stream: Total bytes exported from the stream for this Export Config. It does not include the failed export attempts or messages which are skipped because of some non-retryable error.
+            :param exported_messages_count: Total messages exported/processed.
+            """
             pass
             self.__export_config_identifier = export_config_identifier
             self.__last_exported_sequence_number = last_exported_sequence_number
@@ -5095,9 +5311,15 @@ class MessageStreamInfo:
     }
     _formats_map = {}
     _validations_map = {
-        "definition": {"required": True,},
-        "storage_status": {"required": True,},
-        "export_statuses": {"required": False,},
+        "definition": {
+            "required": True,
+        },
+        "storage_status": {
+            "required": True,
+        },
+        "export_statuses": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -5241,10 +5463,20 @@ class DescribeMessageStreamResponse:
     }
     _formats_map = {}
     _validations_map = {
-        "request_id": {"required": True, "minLength": 1, "pattern": "^[\w ,.\-_]*$",},
-        "status": {"required": True,},
-        "error_message": {"required": False,},
-        "message_stream_info": {"required": False,},
+        "request_id": {
+            "required": True,
+            "minLength": 1,
+            "pattern": "^[\w ,.\-_]*$",
+        },
+        "status": {
+            "required": True,
+        },
+        "error_message": {
+            "required": False,
+        },
+        "message_stream_info": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -5404,14 +5636,21 @@ class AppendMessageRequest:
     }
     _formats_map = {}
     _validations_map = {
-        "request_id": {"required": True, "minLength": 1, "pattern": "^[\w ,.\-_]*$",},
+        "request_id": {
+            "required": True,
+            "minLength": 1,
+            "pattern": "^[\w ,.\-_]*$",
+        },
         "name": {
             "required": True,
             "minLength": 1,
             "maxLength": 255,
             "pattern": "^[\w ,.\-_]*$",
         },
-        "payload": {"required": True, "minLength": 1,},
+        "payload": {
+            "required": True,
+            "minLength": 1,
+        },
     }
 
     def __init__(self, request_id: str = None, name: str = None, payload: bytes = None):
@@ -5534,10 +5773,20 @@ class AppendMessageResponse:
     }
     _formats_map = {}
     _validations_map = {
-        "request_id": {"required": True, "minLength": 1, "pattern": "^[\w ,.\-_]*$",},
-        "status": {"required": True,},
-        "error_message": {"required": False,},
-        "sequence_number": {"required": False,},
+        "request_id": {
+            "required": True,
+            "minLength": 1,
+            "pattern": "^[\w ,.\-_]*$",
+        },
+        "status": {
+            "required": True,
+        },
+        "error_message": {
+            "required": False,
+        },
+        "sequence_number": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -5704,8 +5953,16 @@ class ReadMessagesOptions:
             "maximum": 9223372036854775807,
             "minimum": 0,
         },
-        "min_message_count": {"required": False, "maximum": 2147483647, "minimum": 1,},
-        "max_message_count": {"required": False, "maximum": 2147483647, "minimum": 1,},
+        "min_message_count": {
+            "required": False,
+            "maximum": 2147483647,
+            "minimum": 1,
+        },
+        "max_message_count": {
+            "required": False,
+            "maximum": 2147483647,
+            "minimum": 1,
+        },
         "read_timeout_millis": {
             "required": False,
             "maximum": 9223372036854,
@@ -5900,14 +6157,20 @@ class ReadMessagesRequest:
     }
     _formats_map = {}
     _validations_map = {
-        "request_id": {"required": True, "minLength": 1, "pattern": "^[\w ,.\-_]*$",},
+        "request_id": {
+            "required": True,
+            "minLength": 1,
+            "pattern": "^[\w ,.\-_]*$",
+        },
         "stream_name": {
             "required": True,
             "minLength": 1,
             "maxLength": 255,
             "pattern": "^[\w ,.\-_]*$",
         },
-        "read_messages_options": {"required": False,},
+        "read_messages_options": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -6041,10 +6304,18 @@ class Message:
     }
     _formats_map = {}
     _validations_map = {
-        "stream_name": {"required": True,},
-        "sequence_number": {"required": False,},
-        "ingest_time": {"required": False,},
-        "payload": {"required": True,},
+        "stream_name": {
+            "required": True,
+        },
+        "sequence_number": {
+            "required": False,
+        },
+        "ingest_time": {
+            "required": False,
+        },
+        "payload": {
+            "required": True,
+        },
     }
 
     def __init__(
@@ -6224,10 +6495,20 @@ class ReadMessagesResponse:
     }
     _formats_map = {}
     _validations_map = {
-        "request_id": {"required": False, "minLength": 1, "pattern": "^[\w ,.\-_]*$",},
-        "messages": {"required": False,},
-        "status": {"required": False,},
-        "error_message": {"required": False,},
+        "request_id": {
+            "required": False,
+            "minLength": 1,
+            "pattern": "^[\w ,.\-_]*$",
+        },
+        "messages": {
+            "required": False,
+        },
+        "status": {
+            "required": False,
+        },
+        "error_message": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -6382,7 +6663,11 @@ class ListStreamsRequest:
     }
     _formats_map = {}
     _validations_map = {
-        "request_id": {"required": True, "minLength": 1, "pattern": "^[\w ,.\-_]*$",},
+        "request_id": {
+            "required": True,
+            "minLength": 1,
+            "pattern": "^[\w ,.\-_]*$",
+        },
     }
 
     def __init__(self, request_id: str = None):
@@ -6451,10 +6736,20 @@ class ListStreamsResponse:
     }
     _formats_map = {}
     _validations_map = {
-        "request_id": {"required": True, "minLength": 1, "pattern": "^[\w ,.\-_]*$",},
-        "status": {"required": True,},
-        "error_message": {"required": False,},
-        "streams": {"required": False,},
+        "request_id": {
+            "required": True,
+            "minLength": 1,
+            "pattern": "^[\w ,.\-_]*$",
+        },
+        "status": {
+            "required": True,
+        },
+        "error_message": {
+            "required": False,
+        },
+        "streams": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -6616,7 +6911,11 @@ class TimeInNanos:
             "maximum": 31556889864403199,
             "minimum": 1,
         },
-        "offset_in_nanos": {"required": False, "maximum": 999999999, "minimum": 0,},
+        "offset_in_nanos": {
+            "required": False,
+            "maximum": 999999999,
+            "minimum": 0,
+        },
     }
 
     def __init__(self, time_in_seconds: int = None, offset_in_nanos: int = None):
@@ -6704,6 +7003,25 @@ class TimeInNanos:
         )
 
 
+class Quality(enum.Enum):
+
+    GOOD = "GOOD"
+    BAD = "BAD"
+    UNCERTAIN = "UNCERTAIN"
+
+    @staticmethod
+    def from_dict(d):
+        return Quality(d)
+
+    def as_dict(self):
+        return self.value
+
+    def __repr__(self):
+        return "<Enum Quality. {}: {}>".format(
+            limitedRepr(self.name), limitedRepr(self.value)
+        )
+
+
 class Variant:
     """
     Contains an asset property value (of a single type only).
@@ -6730,9 +7048,17 @@ class Variant:
             "maxLength": 1024,
             "pattern": "[^\u0000-\u001F\u007F]+",
         },
-        "integer_value": {"required": False, "maximum": 2147483647, "minimum": 0,},
-        "double_value": {"required": False,},
-        "boolean_value": {"required": False,},
+        "integer_value": {
+            "required": False,
+            "maximum": 2147483647,
+            "minimum": 0,
+        },
+        "double_value": {
+            "required": False,
+        },
+        "boolean_value": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -6892,25 +7218,6 @@ class Variant:
         )
 
 
-class Quality(enum.Enum):
-
-    GOOD = "GOOD"
-    BAD = "BAD"
-    UNCERTAIN = "UNCERTAIN"
-
-    @staticmethod
-    def from_dict(d):
-        return Quality(d)
-
-    def as_dict(self):
-        return self.value
-
-    def __repr__(self):
-        return "<Enum Quality. {}: {}>".format(
-            limitedRepr(self.name), limitedRepr(self.value)
-        )
-
-
 class AssetPropertyValue:
     """
     Contains asset property value information.
@@ -6929,9 +7236,15 @@ class AssetPropertyValue:
     }
     _formats_map = {}
     _validations_map = {
-        "value": {"required": True,},
-        "timestamp": {"required": True,},
-        "quality": {"required": False,},
+        "value": {
+            "required": True,
+        },
+        "timestamp": {
+            "required": True,
+        },
+        "quality": {
+            "required": False,
+        },
     }
 
     def __init__(
@@ -7038,20 +7351,24 @@ class AssetPropertyValue:
         return d
 
     def __repr__(self):
-        return "<Class AssetPropertyValue. value: {}, timestamp: {}, quality: {}>".format(
-            limitedRepr(
-                self.__value[:20] if isinstance(self.__value, bytes) else self.__value
-            ),
-            limitedRepr(
-                self.__timestamp[:20]
-                if isinstance(self.__timestamp, bytes)
-                else self.__timestamp
-            ),
-            limitedRepr(
-                self.__quality[:20]
-                if isinstance(self.__quality, bytes)
-                else self.__quality
-            ),
+        return (
+            "<Class AssetPropertyValue. value: {}, timestamp: {}, quality: {}>".format(
+                limitedRepr(
+                    self.__value[:20]
+                    if isinstance(self.__value, bytes)
+                    else self.__value
+                ),
+                limitedRepr(
+                    self.__timestamp[:20]
+                    if isinstance(self.__timestamp, bytes)
+                    else self.__timestamp
+                ),
+                limitedRepr(
+                    self.__quality[:20]
+                    if isinstance(self.__quality, bytes)
+                    else self.__quality
+                ),
+            )
         )
 
 
@@ -7083,15 +7400,23 @@ class PutAssetPropertyValueEntry:
             "maxLength": 64,
             "pattern": "^[a-zA-Z0-9_-]+$",
         },
-        "asset_id": {"required": False,},
-        "property_id": {"required": False,},
+        "asset_id": {
+            "required": False,
+        },
+        "property_id": {
+            "required": False,
+        },
         "property_alias": {
             "required": False,
             "minLength": 1,
             "maxLength": 2048,
             "pattern": "[^\u0000-\u001F\u007F]+",
         },
-        "property_values": {"required": True, "maxItems": 10, "minItems": 1,},
+        "property_values": {
+            "required": True,
+            "maxItems": 10,
+            "minItems": 1,
+        },
     }
 
     def __init__(

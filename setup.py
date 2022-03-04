@@ -14,13 +14,17 @@ VERSION_RE = re.compile(r'''SDK_VERSION = ['"]([0-9.]+)['"]''')
 
 
 requires = [
-    "cbor2==4.1.2"
+    "cbor2~=5.4.2"
 ]
 
 
 def get_version():
     init = open(os.path.join(ROOT,'stream_manager','streammanagerclient.py')).read()
-    return VERSION_RE.search(init).group(1)
+    version = VERSION_RE.search(init).group(1)
+    if os.getenv("PYPI_TEST", False) == "True":
+        import time
+        return version + "." + str(int(time.time()))
+    return version
 
 
 setup(
@@ -28,6 +32,7 @@ setup(
     version=get_version(),
     description='The AWS IoT Greengrass Stream Manager SDK for Python',
     long_description=open('README.md').read(),
+    long_description_content_type='text/markdown',
     author='Amazon Web Services',
     url='',
     scripts=[],
@@ -45,7 +50,9 @@ setup(
         'Natural Language :: English',
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
     ],
 )
