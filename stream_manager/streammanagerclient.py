@@ -81,6 +81,12 @@ class StreamManagerClient:
         self.host = host
         if port is None:
             port = int(os.getenv("STREAM_MANAGER_SERVER_PORT", 8088))
+            # os.getenv("STREAM_MANAGER_SERVER_PORT", 8088) call is returning an empty string '', which is not a valid integer value for the int() function.
+            # Convert the port to an integer
+            try:
+                port = int(port)
+            except ValueError:
+                port = 8088  # Use 8088 as the default port if the environment variable is not a valid integer
         self.port = port
         self.__requests = {}
         self.connect_timeout = connect_timeout
