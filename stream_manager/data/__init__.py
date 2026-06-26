@@ -50,7 +50,7 @@ class ConnectRequest:
         "request_id": {
             "required": True,
             "minLength": 1,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "protocol_version": {
             "required": True,
@@ -323,7 +323,7 @@ class ConnectResponse:
         "request_id": {
             "required": False,
             "minLength": 1,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "status": {
             "required": True,
@@ -739,13 +739,13 @@ class S3ExportTaskDefinition:
             "required": True,
             "minLength": 3,
             "maxLength": 63,
-            "pattern": "(?=^.{3,63}$)(?!^(\d+\.)+\d+$)(^(([a-z0-9]|[a-z0-9][a-z0-9\-]*[a-z0-9])\.)*([a-z0-9]|[a-z0-9][a-z0-9\-]*[a-z0-9])$)",
+            "pattern": r"(?=^.{3,63}$)(?!^(\d+\.)+\d+$)(^(([a-z0-9]|[a-z0-9][a-z0-9\-]*[a-z0-9])\.)*([a-z0-9]|[a-z0-9][a-z0-9\-]*[a-z0-9])$)",
         },
         "key": {
             "required": True,
             "minLength": 1,
             "maxLength": 1024,
-            "pattern": "^([^\\\{ \}%\`\[\]\"'\>\<\~\#\^\?\|]|!\{[a-zA-Z]+:[a-zA-Z\/]+\})*$",
+            "pattern": r"^([^\\\{ \}%\`\[\]\"'\>\<\~\#\^\?\|]|!\{[a-zA-Z]+:[a-zA-Z\/]+\})*$",
         },
         "user_metadata": {
             "required": False,
@@ -1436,7 +1436,7 @@ class TraceableRequest:
         "request_id": {
             "required": True,
             "minLength": 1,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
     }
 
@@ -1507,7 +1507,7 @@ class UnknownOperationError:
         "request_id": {
             "required": True,
             "minLength": 1,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "status": {
             "required": True,
@@ -1671,7 +1671,7 @@ class StatusConfig:
             "required": False,
             "minLength": 1,
             "maxLength": 255,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
     }
 
@@ -1790,7 +1790,7 @@ class S3ExportTaskExecutorConfig:
             "required": True,
             "minLength": 1,
             "maxLength": 255,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "size_threshold_for_multipart_upload_bytes": {
             "required": False,
@@ -2064,7 +2064,7 @@ class HTTPConfig:
             "required": True,
             "minLength": 1,
             "maxLength": 255,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "uri": {
             "required": True,
@@ -2431,7 +2431,7 @@ class IoTAnalyticsConfig:
             "required": True,
             "minLength": 1,
             "maxLength": 255,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "iot_channel": {
             "required": True,
@@ -2803,7 +2803,7 @@ class IoTSiteWiseConfig:
             "required": True,
             "minLength": 1,
             "maxLength": 255,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "batch_size": {
             "required": False,
@@ -3099,7 +3099,7 @@ class KinesisConfig:
             "required": True,
             "minLength": 1,
             "maxLength": 255,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "kinesis_stream_name": {
             "required": True,
@@ -3698,7 +3698,7 @@ class MessageStreamDefinition:
             "required": True,
             "minLength": 1,
             "maxLength": 255,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "max_size": {
             "required": False,
@@ -4051,7 +4051,7 @@ class CreateMessageStreamRequest:
         "request_id": {
             "required": True,
             "minLength": 1,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "definition": {
             "required": True,
@@ -4158,7 +4158,7 @@ class CreateMessageStreamResponse:
         "request_id": {
             "required": True,
             "minLength": 1,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "status": {
             "required": True,
@@ -4296,7 +4296,7 @@ class UpdateMessageStreamRequest:
         "request_id": {
             "required": True,
             "minLength": 1,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "definition": {
             "required": True,
@@ -4403,7 +4403,7 @@ class UpdateMessageStreamResponse:
         "request_id": {
             "required": True,
             "minLength": 1,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "status": {
             "required": True,
@@ -4541,13 +4541,13 @@ class DeleteMessageStreamRequest:
         "request_id": {
             "required": True,
             "minLength": 1,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "name": {
             "required": True,
             "minLength": 1,
             "maxLength": 255,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
     }
 
@@ -4643,7 +4643,7 @@ class DeleteMessageStreamResponse:
         "request_id": {
             "required": True,
             "minLength": 1,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "status": {
             "required": True,
@@ -4781,13 +4781,13 @@ class DescribeMessageStreamRequest:
         "request_id": {
             "required": True,
             "minLength": 1,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "name": {
             "required": True,
             "minLength": 1,
             "maxLength": 255,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
     }
 
@@ -5466,7 +5466,7 @@ class DescribeMessageStreamResponse:
         "request_id": {
             "required": True,
             "minLength": 1,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "status": {
             "required": True,
@@ -5639,13 +5639,13 @@ class AppendMessageRequest:
         "request_id": {
             "required": True,
             "minLength": 1,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "name": {
             "required": True,
             "minLength": 1,
             "maxLength": 255,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "payload": {
             "required": True,
@@ -5776,7 +5776,7 @@ class AppendMessageResponse:
         "request_id": {
             "required": True,
             "minLength": 1,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "status": {
             "required": True,
@@ -6160,13 +6160,13 @@ class ReadMessagesRequest:
         "request_id": {
             "required": True,
             "minLength": 1,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "stream_name": {
             "required": True,
             "minLength": 1,
             "maxLength": 255,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "read_messages_options": {
             "required": False,
@@ -6498,7 +6498,7 @@ class ReadMessagesResponse:
         "request_id": {
             "required": False,
             "minLength": 1,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "messages": {
             "required": False,
@@ -6666,7 +6666,7 @@ class ListStreamsRequest:
         "request_id": {
             "required": True,
             "minLength": 1,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
     }
 
@@ -6739,7 +6739,7 @@ class ListStreamsResponse:
         "request_id": {
             "required": True,
             "minLength": 1,
-            "pattern": "^[\w ,.\-_]*$",
+            "pattern": r"^[\w ,.\-_]*$",
         },
         "status": {
             "required": True,
@@ -7046,7 +7046,7 @@ class Variant:
             "required": False,
             "minLength": 1,
             "maxLength": 1024,
-            "pattern": "[^\u0000-\u001F\u007F]+",
+            "pattern": r"[^\u0000-\u001F\u007F]+",
         },
         "integer_value": {
             "required": False,
@@ -7398,7 +7398,7 @@ class PutAssetPropertyValueEntry:
             "required": True,
             "minLength": 1,
             "maxLength": 64,
-            "pattern": "^[a-zA-Z0-9_-]+$",
+            "pattern": r"^[a-zA-Z0-9_-]+$",
         },
         "asset_id": {
             "required": False,
@@ -7410,7 +7410,7 @@ class PutAssetPropertyValueEntry:
             "required": False,
             "minLength": 1,
             "maxLength": 2048,
-            "pattern": "[^\u0000-\u001F\u007F]+",
+            "pattern": r"[^\u0000-\u001F\u007F]+",
         },
         "property_values": {
             "required": True,
