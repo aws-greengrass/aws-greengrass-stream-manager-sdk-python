@@ -14,7 +14,7 @@ VERSION_RE = re.compile(r'''SDK_VERSION = ['"]([0-9.]+)['"]''')
 
 
 requires = [
-    "cbor2>=5.9.0"
+    "cbor2>=5.9.0,<6.0.0"
 ]
 
 
