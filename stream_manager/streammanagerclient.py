@@ -46,7 +46,7 @@ from .utilinternal import UtilInternal
 #  over the wire. When bumping the PROTOCOL_VERSION, consider adding the old version to
 #  __OLD_SUPPORTED_PROTOCOL_VERSIONS list (if you intend to support it). Nothing else is needed to bump
 #  this SDK_VERSION.
-SDK_VERSION = "1.1.1"
+SDK_VERSION = "1.1.2"
 
 
 class StreamManagerClient:
